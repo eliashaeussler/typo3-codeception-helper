@@ -1,0 +1,76 @@
+{
+    "name": "eliashaeussler/typo3-codeception-helper",
+    "description": "Helper functions for Codeception tests within TYPO3 extensions",
+    "license": "GPL-2.0-or-later",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Elias Häußler",
+            "email": "elias@haeussler.dev",
+            "homepage": "https://haeussler.dev",
+            "role": "Maintainer"
+        }
+    ],
+    "require": {
+        "php": "~8.1.0 || ~8.2.0",
+        "codeception/c3": "^2.8",
+        "codeception/codeception": "^4.1.11 || ^5.0",
+        "symfony/filesystem": "^5.4 || ^6.0"
+    },
+    "require-dev": {
+        "armin/editorconfig-cli": "^1.5",
+        "eliashaeussler/php-cs-fixer-config": "^1.2",
+        "eliashaeussler/phpstan-config": "^2.0",
+        "eliashaeussler/rector-config": "^1.1",
+        "ergebnis/composer-normalize": "^2.30",
+        "phpstan/extension-installer": "^1.2",
+        "phpstan/phpstan-phpunit": "^1.1",
+        "phpunit/phpunit": "^10.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "EliasHaeussler\\Typo3CodeceptionHelper\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EliasHaeussler\\Typo3CodeceptionHelper\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "codeception/c3": true,
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": true
+        },
+        "sort-packages": true
+    },
+    "scripts": {
+        "fix": [
+            "@fix:composer",
+            "@fix:editorconfig",
+            "@fix:php"
+        ],
+        "fix:composer": "@composer normalize",
+        "fix:editorconfig": "@lint:editorconfig --fix",
+        "fix:php": "php-cs-fixer fix",
+        "lint": [
+            "@lint:composer",
+            "@lint:editorconfig",
+            "@lint:php"
+        ],
+        "lint:composer": "@fix:composer --dry-run",
+        "lint:editorconfig": "ec --finder-config .editorconfig-finder.php",
+        "lint:php": "@fix:php --dry-run",
+        "migration": [
+            "@migration:rector"
+        ],
+        "migration:rector": "rector process -c rector.php",
+        "sca": [
+            "@sca:php"
+        ],
+        "sca:php": "phpstan analyse -c phpstan.php",
+        "test": "@test:coverage --no-coverage",
+        "test:coverage": "phpunit -c phpunit.xml"
+    }
+}

@@ -1,0 +1,7 @@
+/.build/
+/public/
+/tests/src/Fixtures/Codeception/public/
+/vendor/
+/.php-cs-fixer.cache
+/.phpunit.result.cache
+/c3.php

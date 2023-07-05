@@ -1,0 +1,5 @@
+paths:
+  tests: tests
+  output: output
+  data: data
+  support: support

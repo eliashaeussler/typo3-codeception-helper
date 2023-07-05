@@ -1,0 +1,11 @@
+<?php
+
+namespace Codeception;
+
+class Configuration
+{
+    /**
+     * @return non-empty-string
+     */
+    public static function projectDir(): string {}
+}
