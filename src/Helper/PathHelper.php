@@ -38,19 +38,24 @@ use function uniqid;
  */
 final class PathHelper
 {
+    private const TEMP_FILE_PREFIX = '_codeception_helper_include_';
+
     /**
-     * @param non-empty-string $base
-     * @param non-empty-string $directory
+     * @param non-empty-string      $directory
+     * @param non-empty-string|null $extension
      *
      * @return non-empty-string
      */
-    public static function findUniqueFilename(string $base, string $directory): string
+    public static function findUniqueTemporaryFilename(string $directory, string $extension = null): string
     {
-        $basename = pathinfo($base, PATHINFO_BASENAME);
-        $extension = pathinfo($base, PATHINFO_EXTENSION);
+        if (null !== $extension) {
+            $suffix = '.'.$extension;
+        } else {
+            $suffix = '';
+        }
 
         do {
-            $possibleFilename = sprintf('%s.%s', uniqid($basename.'.'), $extension);
+            $possibleFilename = uniqid(self::TEMP_FILE_PREFIX).$suffix;
         } while (file_exists(Filesystem\Path::join($directory, $possibleFilename)));
 
         return $possibleFilename;

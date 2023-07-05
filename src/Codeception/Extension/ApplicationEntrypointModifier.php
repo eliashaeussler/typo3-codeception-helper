@@ -32,6 +32,7 @@ use EliasHaeussler\Typo3CodeceptionHelper\Template;
 use Symfony\Component\Filesystem;
 
 use function is_string;
+use function pathinfo;
 use function rtrim;
 
 /**
@@ -162,11 +163,17 @@ final class ApplicationEntrypointModifier extends Extension
             throw new Exception\ConfigIsEmpty('main-entrypoint');
         }
 
+        $extension = pathinfo($mainEntrypoint, PATHINFO_EXTENSION);
+
+        if ('' === $extension) {
+            $extension = null;
+        }
+
         return [
             'main' => Filesystem\Path::join($this->webDirectory, $mainEntrypoint),
             'app' => Filesystem\Path::join(
                 $this->webDirectory,
-                Helper\PathHelper::findUniqueFilename($mainEntrypoint, $this->webDirectory),
+                Helper\PathHelper::findUniqueTemporaryFilename($this->webDirectory, $extension),
             ),
         ];
     }
