@@ -4,3 +4,8 @@ parameters:
 			message: "#^PHPDoc type array\\<string, array\\<int, array\\<string, mixed\\>\\>\\> of property EliasHaeussler\\\\Typo3CodeceptionHelper\\\\Codeception\\\\Extension\\\\ApplicationEntrypointModifier\\:\\:\\$config is not the same as PHPDoc type array\\<int\\|string, mixed\\> of overridden property Codeception\\\\Extension\\:\\:\\$config\\.$#"
 			count: 1
 			path: src/Codeception/Extension/ApplicationEntrypointModifier.php
+
+		-
+			message: "#^PHPDoc tag @var with type Codeception\\\\Module\\\\WebDriver is not subtype of native type Codeception\\\\Actor\\.$#"
+			count: 2
+			path: src/Codeception/Helper/Backend.php

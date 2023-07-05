@@ -26,6 +26,48 @@ composer require --dev eliashaeussler/typo3-codeception-helper
 
 ## ⚡ Usage
 
+### `Backend` helper
+
+> Source: [`Codeception\Helper\Backend`](src/Codeception/Helper/Backend.php)
+
+A Codeception helper that allows to perform actions within TYPO3
+backend.
+
+**You need to subclass this helper and inject your actor:**
+
+```php
+<?php
+
+namespace Vendor\Extension\Tests\Acceptance\Support\Helper;
+
+use Codeception\Actor;
+use EliasHaeussler\Typo3CodeceptionHelper;
+use TYPO3\TestingFramework;
+use Vendor\Extension\Tests;
+
+final class Backend extends Typo3CodeceptionHelper\Codeception\Helper\Backend
+{
+    public function __construct(
+        Tests\Acceptance\Support\AcceptanceTester $tester,
+        Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
+    ) {
+        parent::__construct($tester, $modalDialog);
+    }
+}
+```
+
+Now add the helper to your `codeception.yml` file:
+
+```yaml
+# codeception.yml
+
+suites:
+  Acceptance:
+    modules:
+      enabled:
+        - Vendor\Extension\Tests\Acceptance\Support\Helper\Backend
+```
+
 ### Application entrypoint modifier extension
 
 > Source: [`Codeception\Extension\ApplicationEntrypointModifier`](src/Codeception/Extension/ApplicationEntrypointModifier.php)
@@ -35,7 +77,7 @@ when collecting code coverage with [`codeception/c3`](https://github.com/Codecep
 It replaces an existing entrypoint (e.g. `typo3/index.php`) with
 a modified entrypoint that includes the distributed `c3.php` file.
 
-Enable this extension in your `codeception.yml`:
+Enable this extension in your `codeception.yml` file:
 
 ```yaml
 # codeception.yml

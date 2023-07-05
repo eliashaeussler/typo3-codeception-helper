@@ -20,6 +20,7 @@
     },
     "require-dev": {
         "armin/editorconfig-cli": "^1.5",
+        "codeception/module-webdriver": "^4.0",
         "eliashaeussler/php-cs-fixer-config": "^1.2",
         "eliashaeussler/phpstan-config": "^2.0",
         "eliashaeussler/rector-config": "^1.1",
@@ -27,7 +28,8 @@
         "phpstan/extension-installer": "^1.2",
         "phpstan/phpstan-phpunit": "^1.1",
         "phpunit/phpunit": "^10.2",
-        "symfony/finder": "^5.4 || ^6.0"
+        "symfony/finder": "^5.4 || ^6.0",
+        "typo3/testing-framework": "^7.0 || ^8.0"
     },
     "autoload": {
         "psr-4": {
@@ -43,7 +45,9 @@
         "allow-plugins": {
             "codeception/c3": true,
             "ergebnis/composer-normalize": true,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true
         },
         "sort-packages": true
     },
