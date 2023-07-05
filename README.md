@@ -10,8 +10,8 @@
 
 </div>
 
-This library provides some helper functions for Codeception tests
-within TYPO3 extensions. In addition, an application entrypoint
+This library provides some helper functions for [Codeception](https://codeception.com/)
+tests within TYPO3 extensions. In addition, an application entrypoint
 modifier extension for coverage collection within acceptance tests
 is distributed.
 
