@@ -114,6 +114,7 @@ final class ApplicationEntrypointModifier extends Extension
         $templateFile = 'entrypoint.php.tpl';
         $variables = [
             'projectDir' => rtrim(Configuration::projectDir(), DIRECTORY_SEPARATOR),
+            'vendorDir' => Helper\PathHelper::getVendorDirectory(),
             'appEntrypoint' => $this->appEntrypoint,
         ];
 

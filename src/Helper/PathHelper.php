@@ -23,11 +23,13 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3CodeceptionHelper\Helper;
 
+use Composer\InstalledVersions;
+use EliasHaeussler\Typo3CodeceptionHelper\Exception;
+use ReflectionClass;
 use Symfony\Component\Filesystem;
 
+use function dirname;
 use function file_exists;
-use function pathinfo;
-use function sprintf;
 use function uniqid;
 
 /**
@@ -59,5 +61,20 @@ final class PathHelper
         } while (file_exists(Filesystem\Path::join($directory, $possibleFilename)));
 
         return $possibleFilename;
+    }
+
+    /**
+     * @throws Exception\VendorDirectoryCannotBeDetermined
+     */
+    public static function getVendorDirectory(): string
+    {
+        $reflectionClass = new ReflectionClass(InstalledVersions::class);
+        $filename = $reflectionClass->getFileName();
+
+        if (false === $filename) {
+            throw new Exception\VendorDirectoryCannotBeDetermined();
+        }
+
+        return dirname($filename, 2);
     }
 }
