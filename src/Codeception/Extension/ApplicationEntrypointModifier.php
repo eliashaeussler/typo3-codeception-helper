@@ -100,6 +100,30 @@ final class ApplicationEntrypointModifier extends Extension
         }
     }
 
+    /**
+     * @return non-empty-string
+     */
+    public function getWebDirectory(): string
+    {
+        return $this->webDirectory;
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    public function getMainEntrypoint(): string
+    {
+        return $this->mainEntrypoint;
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    public function getAppEntrypoint(): string
+    {
+        return $this->appEntrypoint;
+    }
+
     private function entrypointNeedsUpdate(): bool
     {
         if (!$this->filesystem->exists($this->appEntrypoint)) {
