@@ -21,7 +21,7 @@ is distributed.
 [![Packagist Downloads](https://img.shields.io/packagist/dt/eliashaeussler/typo3-codeception-helper?color=brightgreen)](https://packagist.org/packages/eliashaeussler/typo3-codeception-helper)
 
 ```bash
-composer require eliashaeussler/typo3-codeception-helper
+composer require --dev eliashaeussler/typo3-codeception-helper
 ```
 
 ## ⚡ Usage
