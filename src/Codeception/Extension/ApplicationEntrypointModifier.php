@@ -119,6 +119,11 @@ final class ApplicationEntrypointModifier extends Extension
         ];
 
         if ($dump) {
+            // Clean up previous entrypoints
+            foreach (Helper\PathHelper::findTemporaryFiles($this->webDirectory) as $temporaryFile) {
+                $this->filesystem->remove($temporaryFile->getPathname());
+            }
+
             $this->filesystem->rename($this->mainEntrypoint, $this->appEntrypoint, true);
 
             return $this->templateRenderer->dump($templateFile, $this->mainEntrypoint, $variables);

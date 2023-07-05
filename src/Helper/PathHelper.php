@@ -27,9 +27,11 @@ use Composer\InstalledVersions;
 use EliasHaeussler\Typo3CodeceptionHelper\Exception;
 use ReflectionClass;
 use Symfony\Component\Filesystem;
+use Symfony\Component\Finder;
 
 use function dirname;
 use function file_exists;
+use function is_dir;
 use function uniqid;
 
 /**
@@ -61,6 +63,24 @@ final class PathHelper
         } while (file_exists(Filesystem\Path::join($directory, $possibleFilename)));
 
         return $possibleFilename;
+    }
+
+    /**
+     * @param non-empty-string $directory
+     *
+     * @return iterable<Finder\SplFileInfo>
+     */
+    public static function findTemporaryFiles(string $directory): iterable
+    {
+        if (!is_dir($directory)) {
+            return [];
+        }
+
+        return Finder\Finder::create()
+            ->files()
+            ->in($directory)
+            ->name('/^'.self::TEMP_FILE_PREFIX.'/')
+        ;
     }
 
     /**
