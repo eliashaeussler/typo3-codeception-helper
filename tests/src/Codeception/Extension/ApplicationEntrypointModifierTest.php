@@ -30,6 +30,7 @@ use Symfony\Component\Filesystem;
 use Symfony\Component\Finder;
 
 use function dirname;
+use function pathinfo;
 use function sleep;
 
 /**
@@ -118,13 +119,62 @@ final class ApplicationEntrypointModifierTest extends Framework\TestCase
     }
 
     #[Framework\Attributes\Test]
+    public function constructorInitializesWebDirectory(): void
+    {
+        self::assertSame(
+            $this->publicDirectory,
+            $this->subject->getWebDirectory(),
+        );
+    }
+
+    #[Framework\Attributes\Test]
+    public function constructorInitializesEntrypoints(): void
+    {
+        self::assertSame(
+            $this->publicDirectory.'/index.php',
+            $this->subject->getMainEntrypoint(),
+        );
+        self::assertStringStartsWith(
+            $this->publicDirectory.'/_codeception_helper_include_',
+            $this->subject->getAppEntrypoint(),
+        );
+    }
+
+    #[Framework\Attributes\Test]
+    public function constructorCanHandleEntrypointsWithoutFileExtension(): void
+    {
+        $subject = new Src\Codeception\Extension\ApplicationEntrypointModifier(
+            [
+                'web-dir' => 'public',
+                'main-entrypoint' => 'index',
+            ],
+            [],
+        );
+
+        self::assertSame('', pathinfo($subject->getAppEntrypoint(), PATHINFO_EXTENSION));
+    }
+
+    #[Framework\Attributes\Test]
+    public function beforeSuiteRemovesPreviouslyCreatedEntrypoints(): void
+    {
+        $this->filesystem->dumpFile($this->publicDirectory.'/_codeception_helper_include_foo.php', 'foo');
+        $this->filesystem->dumpFile($this->publicDirectory.'/_codeception_helper_include_baz.php', 'baz');
+
+        // index.php + 2 dummy files
+        self::assertCount(3, $this->createFinder());
+
+        $this->subject->beforeSuite();
+
+        // index.php + entrypoint
+        self::assertCount(2, $this->createFinder());
+    }
+
+    #[Framework\Attributes\Test]
     public function beforeSuiteCreatesEntrypointIfItDoesNotExist(): void
     {
         $this->subject->beforeSuite();
 
-        $finder = Finder\Finder::create()->in($this->publicDirectory);
-
-        self::assertCount(2, $finder);
+        self::assertCount(2, $this->createFinder());
     }
 
     #[Framework\Attributes\Test]
@@ -173,13 +223,17 @@ final class ApplicationEntrypointModifierTest extends Framework\TestCase
      */
     private function getLastModificationTimes(): array
     {
-        $finder = Finder\Finder::create()->in($this->publicDirectory);
         $lastMod = [];
 
-        foreach ($finder as $file) {
+        foreach ($this->createFinder() as $file) {
             $lastMod[$file->getFilename()] = $file->getMTime();
         }
 
         return $lastMod;
+    }
+
+    private function createFinder(): Finder\Finder
+    {
+        return Finder\Finder::create()->in($this->publicDirectory);
     }
 }
