@@ -45,6 +45,7 @@ extensions:
     - EliasHaeussler\Typo3CodeceptionHelper\Codeception\Extension\ApplicationEntrypointModifier:
         web-dir: .Build/web
         main-entrypoint: index.php
+        app-entrypoint: app.php
 ```
 
 The following config must be provided:
@@ -52,7 +53,28 @@ The following config must be provided:
 | Config name       | Description                                                                    | Default value |
 |-------------------|--------------------------------------------------------------------------------|---------------|
 | `web-dir`         | Relative path from project root to directory that contains the main entrypoint | –             |
-| `main-entrypoint` | Name of the entrypoint to replace (located in web directory)                   | `index.php`   |
+| `main-entrypoint` | Name of the entrypoint to replace (the file being accessed by the web server)  | `index.php`   |
+| `app-entrypoint`  | Name of the original relocated entrypoint (the renamed main entrypoint)        | `app.php`     |
+
+#### Example
+
+Given the following directory structure:
+
+```
+.Build
+└── web
+    └── index.php   # main entrypoint provided by framework/application
+```
+
+Once the extension is enabled and properly configured, the following
+directory structure exists after the test suite is started:
+
+```
+.Build
+└── web
+    ├── app.php     # contains the original contents from index.php
+    └── index.php   # generated entrypoint that includes c3.php and app.php
+```
 
 ## 🧑‍💻 Contributing
 

@@ -30,7 +30,6 @@ use Symfony\Component\Filesystem;
 use Symfony\Component\Finder;
 
 use function dirname;
-use function pathinfo;
 use function sleep;
 
 /**
@@ -58,6 +57,7 @@ final class ApplicationEntrypointModifierTest extends Framework\TestCase
             [
                 'web-dir' => 'public',
                 'main-entrypoint' => 'index.php',
+                'app-entrypoint' => 'app.php',
             ],
             [],
         );
@@ -119,6 +119,34 @@ final class ApplicationEntrypointModifierTest extends Framework\TestCase
     }
 
     #[Framework\Attributes\Test]
+    public function constructorThrowsExceptionIfAppEntrypointIsNotConfigured(): void
+    {
+        $this->expectExceptionObject(new Src\Exception\ConfigIsInvalid('app-entrypoint'));
+
+        new Src\Codeception\Extension\ApplicationEntrypointModifier(
+            [
+                'web-dir' => 'public',
+                'app-entrypoint' => null,
+            ],
+            [],
+        );
+    }
+
+    #[Framework\Attributes\Test]
+    public function constructorThrowsExceptionIfAppEntrypointIsEmpty(): void
+    {
+        $this->expectExceptionObject(new Src\Exception\ConfigIsEmpty('app-entrypoint'));
+
+        new Src\Codeception\Extension\ApplicationEntrypointModifier(
+            [
+                'web-dir' => 'public',
+                'app-entrypoint' => '',
+            ],
+            [],
+        );
+    }
+
+    #[Framework\Attributes\Test]
     public function constructorInitializesWebDirectory(): void
     {
         self::assertSame(
@@ -128,45 +156,21 @@ final class ApplicationEntrypointModifierTest extends Framework\TestCase
     }
 
     #[Framework\Attributes\Test]
-    public function constructorInitializesEntrypoints(): void
+    public function constructorInitializesMainEntrypoint(): void
     {
         self::assertSame(
             $this->publicDirectory.'/index.php',
             $this->subject->getMainEntrypoint(),
         );
-        self::assertStringStartsWith(
-            $this->publicDirectory.'/_codeception_helper_include_',
+    }
+
+    #[Framework\Attributes\Test]
+    public function constructorInitializesAppEntrypoint(): void
+    {
+        self::assertSame(
+            $this->publicDirectory.'/app.php',
             $this->subject->getAppEntrypoint(),
         );
-    }
-
-    #[Framework\Attributes\Test]
-    public function constructorCanHandleEntrypointsWithoutFileExtension(): void
-    {
-        $subject = new Src\Codeception\Extension\ApplicationEntrypointModifier(
-            [
-                'web-dir' => 'public',
-                'main-entrypoint' => 'index',
-            ],
-            [],
-        );
-
-        self::assertSame('', pathinfo($subject->getAppEntrypoint(), PATHINFO_EXTENSION));
-    }
-
-    #[Framework\Attributes\Test]
-    public function beforeSuiteRemovesPreviouslyCreatedEntrypoints(): void
-    {
-        $this->filesystem->dumpFile($this->publicDirectory.'/_codeception_helper_include_foo.php', 'foo');
-        $this->filesystem->dumpFile($this->publicDirectory.'/_codeception_helper_include_baz.php', 'baz');
-
-        // index.php + 2 dummy files
-        self::assertCount(3, $this->createFinder());
-
-        $this->subject->beforeSuite();
-
-        // index.php + entrypoint
-        self::assertCount(2, $this->createFinder());
     }
 
     #[Framework\Attributes\Test]

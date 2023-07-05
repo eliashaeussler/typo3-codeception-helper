@@ -32,7 +32,6 @@ use EliasHaeussler\Typo3CodeceptionHelper\Template;
 use Symfony\Component\Filesystem;
 
 use function is_string;
-use function pathinfo;
 use function rtrim;
 
 /**
@@ -53,6 +52,7 @@ final class ApplicationEntrypointModifier extends Extension
     protected array $config = [
         'web-dir' => null,
         'main-entrypoint' => 'index.php',
+        'app-entrypoint' => 'app.php',
     ];
 
     /**
@@ -90,7 +90,8 @@ final class ApplicationEntrypointModifier extends Extension
     public function _initialize(): void
     {
         $this->webDirectory = $this->initializeWebDirectory();
-        ['main' => $this->mainEntrypoint, 'app' => $this->appEntrypoint] = $this->initializeEntrypoints();
+        $this->mainEntrypoint = $this->initializeEntrypoint('main-entrypoint');
+        $this->appEntrypoint = $this->initializeEntrypoint('app-entrypoint');
     }
 
     public function beforeSuite(): void
@@ -142,18 +143,13 @@ final class ApplicationEntrypointModifier extends Extension
             'appEntrypoint' => $this->appEntrypoint,
         ];
 
-        if ($dump) {
-            // Clean up previous entrypoints
-            foreach (Helper\PathHelper::findTemporaryFiles($this->webDirectory) as $temporaryFile) {
-                $this->filesystem->remove($temporaryFile->getPathname());
-            }
-
-            $this->filesystem->rename($this->mainEntrypoint, $this->appEntrypoint, true);
-
-            return $this->templateRenderer->dump($templateFile, $this->mainEntrypoint, $variables);
+        if (!$dump) {
+            return $this->templateRenderer->render($templateFile, $variables);
         }
 
-        return $this->templateRenderer->render($templateFile, $variables);
+        $this->filesystem->rename($this->mainEntrypoint, $this->appEntrypoint, true);
+
+        return $this->templateRenderer->dump($templateFile, $this->mainEntrypoint, $variables);
     }
 
     /**
@@ -177,34 +173,24 @@ final class ApplicationEntrypointModifier extends Extension
     }
 
     /**
-     * @return array{main: non-empty-string, app: non-empty-string}
+     * @param non-empty-string $name
+     *
+     * @return non-empty-string
      *
      * @throws Exception\ConfigIsEmpty
      * @throws Exception\ConfigIsInvalid
      */
-    private function initializeEntrypoints(): array
+    private function initializeEntrypoint(string $name): string
     {
-        $mainEntrypoint = $this->config['main-entrypoint'];
+        $entrypoint = $this->config[$name];
 
-        if (!is_string($mainEntrypoint)) {
-            throw new Exception\ConfigIsInvalid('main-entrypoint');
+        if (!is_string($entrypoint)) {
+            throw new Exception\ConfigIsInvalid($name);
         }
-        if ('' === $mainEntrypoint) {
-            throw new Exception\ConfigIsEmpty('main-entrypoint');
-        }
-
-        $extension = pathinfo($mainEntrypoint, PATHINFO_EXTENSION);
-
-        if ('' === $extension) {
-            $extension = null;
+        if ('' === $entrypoint) {
+            throw new Exception\ConfigIsEmpty($name);
         }
 
-        return [
-            'main' => Filesystem\Path::join($this->webDirectory, $mainEntrypoint),
-            'app' => Filesystem\Path::join(
-                $this->webDirectory,
-                Helper\PathHelper::findUniqueTemporaryFilename($this->webDirectory, $extension),
-            ),
-        ];
+        return Filesystem\Path::join($this->webDirectory, $entrypoint);
     }
 }

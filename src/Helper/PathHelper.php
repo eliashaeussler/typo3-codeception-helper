@@ -26,13 +26,8 @@ namespace EliasHaeussler\Typo3CodeceptionHelper\Helper;
 use Composer\InstalledVersions;
 use EliasHaeussler\Typo3CodeceptionHelper\Exception;
 use ReflectionClass;
-use Symfony\Component\Filesystem;
-use Symfony\Component\Finder;
 
 use function dirname;
-use function file_exists;
-use function is_dir;
-use function uniqid;
 
 /**
  * PathHelper.
@@ -42,47 +37,6 @@ use function uniqid;
  */
 final class PathHelper
 {
-    private const TEMP_FILE_PREFIX = '_codeception_helper_include_';
-
-    /**
-     * @param non-empty-string      $directory
-     * @param non-empty-string|null $extension
-     *
-     * @return non-empty-string
-     */
-    public static function findUniqueTemporaryFilename(string $directory, string $extension = null): string
-    {
-        if (null !== $extension) {
-            $suffix = '.'.$extension;
-        } else {
-            $suffix = '';
-        }
-
-        do {
-            $possibleFilename = uniqid(self::TEMP_FILE_PREFIX).$suffix;
-        } while (file_exists(Filesystem\Path::join($directory, $possibleFilename)));
-
-        return $possibleFilename;
-    }
-
-    /**
-     * @param non-empty-string $directory
-     *
-     * @return iterable<Finder\SplFileInfo>
-     */
-    public static function findTemporaryFiles(string $directory): iterable
-    {
-        if (!is_dir($directory)) {
-            return [];
-        }
-
-        return Finder\Finder::create()
-            ->files()
-            ->in($directory)
-            ->name('/^'.self::TEMP_FILE_PREFIX.'/')
-        ;
-    }
-
     /**
      * @throws Exception\VendorDirectoryCannotBeDetermined
      */

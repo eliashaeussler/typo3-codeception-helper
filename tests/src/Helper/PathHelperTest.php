@@ -28,7 +28,6 @@ use PHPUnit\Framework;
 use Symfony\Component\Filesystem;
 
 use function dirname;
-use function pathinfo;
 use function sys_get_temp_dir;
 
 /**
@@ -52,41 +51,6 @@ final class PathHelperTest extends Framework\TestCase
         $this->filesystem = new Filesystem\Filesystem();
 
         $this->filesystem->remove($this->testDirectory);
-    }
-
-    #[Framework\Attributes\Test]
-    public function findUniqueTemporaryFilenameReturnsUniqueFilenameWithinGivenDirectory(): void
-    {
-        $actual = Src\Helper\PathHelper::findUniqueTemporaryFilename(__DIR__, 'php');
-
-        self::assertFileDoesNotExist($actual);
-    }
-
-    #[Framework\Attributes\Test]
-    public function findUniqueTemporaryFilenameCanHandleEmptyFileExtensions(): void
-    {
-        $actual = Src\Helper\PathHelper::findUniqueTemporaryFilename(__DIR__);
-
-        self::assertSame('', pathinfo($actual, PATHINFO_EXTENSION));
-    }
-
-    #[Framework\Attributes\Test]
-    public function findTemporaryFilesReturnsEmptyArrayIfGivenDirectoryDoesNotExist(): void
-    {
-        self::assertSame([], Src\Helper\PathHelper::findTemporaryFiles($this->testDirectory));
-    }
-
-    #[Framework\Attributes\Test]
-    public function findTemporaryFilesReturnsFinderForAllTemporaryFilesWithinGivenDirectory(): void
-    {
-        $this->filesystem->mkdir($this->testDirectory);
-
-        self::assertCount(0, Src\Helper\PathHelper::findTemporaryFiles($this->testDirectory));
-
-        $this->filesystem->dumpFile($this->testDirectory.'/_codeception_helper_include_foo.txt', 'foo');
-        $this->filesystem->dumpFile($this->testDirectory.'/_codeception_helper_include_baz.txt', 'baz');
-
-        self::assertCount(2, Src\Helper\PathHelper::findTemporaryFiles($this->testDirectory));
     }
 
     #[Framework\Attributes\Test]
