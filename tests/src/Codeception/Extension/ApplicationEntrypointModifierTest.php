@@ -41,6 +41,9 @@ use function sleep;
 #[Framework\Attributes\CoversClass(Src\Codeception\Extension\ApplicationEntrypointModifier::class)]
 final class ApplicationEntrypointModifierTest extends Framework\TestCase
 {
+    /**
+     * @var non-empty-string
+     */
     private string $publicDirectory;
     private Filesystem\Filesystem $filesystem;
     private Src\Codeception\Extension\ApplicationEntrypointModifier $subject;
@@ -55,9 +58,13 @@ final class ApplicationEntrypointModifierTest extends Framework\TestCase
         $this->filesystem = new Filesystem\Filesystem();
         $this->subject = new Src\Codeception\Extension\ApplicationEntrypointModifier(
             [
-                'web-dir' => 'public',
-                'main-entrypoint' => 'index.php',
-                'app-entrypoint' => 'app.php',
+                'entrypoints' => [
+                    [
+                        'web-dir' => 'public',
+                        'main-entrypoint' => 'index.php',
+                        'app-entrypoint' => 'app.php',
+                    ],
+                ],
             ],
             [],
         );
@@ -70,107 +77,15 @@ final class ApplicationEntrypointModifierTest extends Framework\TestCase
     }
 
     #[Framework\Attributes\Test]
-    public function constructorThrowsExceptionIfWebDirectoryIsNotConfigured(): void
+    public function constructorInitializesEntrypoints(): void
     {
-        $this->expectExceptionObject(new Src\Exception\ConfigIsInvalid('web-dir'));
-
-        new Src\Codeception\Extension\ApplicationEntrypointModifier([], []);
-    }
-
-    #[Framework\Attributes\Test]
-    public function constructorThrowsExceptionIfWebDirectoryIsEmpty(): void
-    {
-        $this->expectExceptionObject(new Src\Exception\ConfigIsEmpty('web-dir'));
-
-        new Src\Codeception\Extension\ApplicationEntrypointModifier(
-            [
-                'web-dir' => '',
-            ],
-            [],
-        );
-    }
-
-    #[Framework\Attributes\Test]
-    public function constructorThrowsExceptionIfMainEntrypointIsNotConfigured(): void
-    {
-        $this->expectExceptionObject(new Src\Exception\ConfigIsInvalid('main-entrypoint'));
-
-        new Src\Codeception\Extension\ApplicationEntrypointModifier(
-            [
-                'web-dir' => 'public',
-                'main-entrypoint' => null,
-            ],
-            [],
-        );
-    }
-
-    #[Framework\Attributes\Test]
-    public function constructorThrowsExceptionIfMainEntrypointIsEmpty(): void
-    {
-        $this->expectExceptionObject(new Src\Exception\ConfigIsEmpty('main-entrypoint'));
-
-        new Src\Codeception\Extension\ApplicationEntrypointModifier(
-            [
-                'web-dir' => 'public',
-                'main-entrypoint' => '',
-            ],
-            [],
-        );
-    }
-
-    #[Framework\Attributes\Test]
-    public function constructorThrowsExceptionIfAppEntrypointIsNotConfigured(): void
-    {
-        $this->expectExceptionObject(new Src\Exception\ConfigIsInvalid('app-entrypoint'));
-
-        new Src\Codeception\Extension\ApplicationEntrypointModifier(
-            [
-                'web-dir' => 'public',
-                'app-entrypoint' => null,
-            ],
-            [],
-        );
-    }
-
-    #[Framework\Attributes\Test]
-    public function constructorThrowsExceptionIfAppEntrypointIsEmpty(): void
-    {
-        $this->expectExceptionObject(new Src\Exception\ConfigIsEmpty('app-entrypoint'));
-
-        new Src\Codeception\Extension\ApplicationEntrypointModifier(
-            [
-                'web-dir' => 'public',
-                'app-entrypoint' => '',
-            ],
-            [],
-        );
-    }
-
-    #[Framework\Attributes\Test]
-    public function constructorInitializesWebDirectory(): void
-    {
-        self::assertSame(
+        $expected = new Src\ValueObject\Entrypoint(
             $this->publicDirectory,
-            $this->subject->getWebDirectory(),
-        );
-    }
-
-    #[Framework\Attributes\Test]
-    public function constructorInitializesMainEntrypoint(): void
-    {
-        self::assertSame(
             $this->publicDirectory.'/index.php',
-            $this->subject->getMainEntrypoint(),
-        );
-    }
-
-    #[Framework\Attributes\Test]
-    public function constructorInitializesAppEntrypoint(): void
-    {
-        self::assertSame(
             $this->publicDirectory.'/app.php',
-            $this->subject->getAppEntrypoint(),
         );
+
+        self::assertEquals([$expected], $this->subject->getEntrypoints());
     }
 
     #[Framework\Attributes\Test]

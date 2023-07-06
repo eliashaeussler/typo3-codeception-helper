@@ -28,6 +28,7 @@ return PHPStanConfig\Config\Config::create(__DIR__)
         'src',
         'tests',
     )
+    ->withBaseline()
     ->withBleedingEdge()
     ->stubFiles(
         'tests/stubs/Configuration.stub',

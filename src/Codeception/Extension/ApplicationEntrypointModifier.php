@@ -29,9 +29,9 @@ use Codeception\Extension;
 use EliasHaeussler\Typo3CodeceptionHelper\Exception;
 use EliasHaeussler\Typo3CodeceptionHelper\Helper;
 use EliasHaeussler\Typo3CodeceptionHelper\Template;
+use EliasHaeussler\Typo3CodeceptionHelper\ValueObject;
 use Symfony\Component\Filesystem;
 
-use function is_string;
 use function rtrim;
 
 /**
@@ -49,26 +49,17 @@ final class ApplicationEntrypointModifier extends Extension
         Events::SUITE_BEFORE => 'beforeSuite',
     ];
 
+    /**
+     * @var array{entrypoints: list<array<string, mixed>>}
+     */
     protected array $config = [
-        'web-dir' => null,
-        'main-entrypoint' => 'index.php',
-        'app-entrypoint' => 'app.php',
+        'entrypoints' => [],
     ];
 
     /**
-     * @var non-empty-string
+     * @var list<ValueObject\Entrypoint>
      */
-    private string $webDirectory;
-
-    /**
-     * @var non-empty-string
-     */
-    private string $mainEntrypoint;
-
-    /**
-     * @var non-empty-string
-     */
-    private string $appEntrypoint;
+    private array $entrypoints = [];
 
     /**
      * @param array<string, mixed> $config
@@ -89,108 +80,52 @@ final class ApplicationEntrypointModifier extends Extension
      */
     public function _initialize(): void
     {
-        $this->webDirectory = $this->initializeWebDirectory();
-        $this->mainEntrypoint = $this->initializeEntrypoint('main-entrypoint');
-        $this->appEntrypoint = $this->initializeEntrypoint('app-entrypoint');
+        foreach ($this->config['entrypoints'] as $entrypoint) {
+            $this->entrypoints[] = ValueObject\Entrypoint::fromConfig($entrypoint, Configuration::projectDir());
+        }
     }
 
     public function beforeSuite(): void
     {
-        if ($this->entrypointNeedsUpdate()) {
-            $this->createEntrypoint(true);
+        foreach ($this->entrypoints as $entrypoint) {
+            if ($this->entrypointNeedsUpdate($entrypoint)) {
+                $this->createEntrypoint($entrypoint, true);
+            }
         }
     }
 
     /**
-     * @return non-empty-string
+     * @return list<ValueObject\Entrypoint>
      */
-    public function getWebDirectory(): string
+    public function getEntrypoints(): array
     {
-        return $this->webDirectory;
+        return $this->entrypoints;
     }
 
-    /**
-     * @return non-empty-string
-     */
-    public function getMainEntrypoint(): string
+    private function entrypointNeedsUpdate(ValueObject\Entrypoint $entrypoint): bool
     {
-        return $this->mainEntrypoint;
-    }
-
-    /**
-     * @return non-empty-string
-     */
-    public function getAppEntrypoint(): string
-    {
-        return $this->appEntrypoint;
-    }
-
-    private function entrypointNeedsUpdate(): bool
-    {
-        if (!$this->filesystem->exists($this->appEntrypoint)) {
+        if (!$this->filesystem->exists($entrypoint->getAppEntrypoint())) {
             return true;
         }
 
-        return sha1_file($this->mainEntrypoint) !== sha1($this->createEntrypoint());
+        return sha1_file($entrypoint->getMainEntrypoint()) !== sha1($this->createEntrypoint($entrypoint));
     }
 
-    private function createEntrypoint(bool $dump = false): string
+    private function createEntrypoint(ValueObject\Entrypoint $entrypoint, bool $dump = false): string
     {
         $templateFile = 'entrypoint.php.tpl';
         $variables = [
             'projectDir' => rtrim(Configuration::projectDir(), DIRECTORY_SEPARATOR),
             'vendorDir' => Helper\PathHelper::getVendorDirectory(),
-            'appEntrypoint' => $this->appEntrypoint,
+            'appEntrypoint' => $entrypoint->getAppEntrypoint(),
         ];
 
         if (!$dump) {
             return $this->templateRenderer->render($templateFile, $variables);
         }
 
-        $this->filesystem->rename($this->mainEntrypoint, $this->appEntrypoint, true);
+        $this->filesystem->rename($entrypoint->getMainEntrypoint(), $entrypoint->getAppEntrypoint(), true);
 
-        return $this->templateRenderer->dump($templateFile, $this->mainEntrypoint, $variables);
-    }
-
-    /**
-     * @return non-empty-string
-     *
-     * @throws Exception\ConfigIsEmpty
-     * @throws Exception\ConfigIsInvalid
-     */
-    private function initializeWebDirectory(): string
-    {
-        $webDir = $this->config['web-dir'];
-
-        if (!is_string($webDir)) {
-            throw new Exception\ConfigIsInvalid('web-dir');
-        }
-        if ('' === $webDir) {
-            throw new Exception\ConfigIsEmpty('web-dir');
-        }
-
-        return Filesystem\Path::join(Configuration::projectDir(), $webDir);
-    }
-
-    /**
-     * @param non-empty-string $name
-     *
-     * @return non-empty-string
-     *
-     * @throws Exception\ConfigIsEmpty
-     * @throws Exception\ConfigIsInvalid
-     */
-    private function initializeEntrypoint(string $name): string
-    {
-        $entrypoint = $this->config[$name];
-
-        if (!is_string($entrypoint)) {
-            throw new Exception\ConfigIsInvalid($name);
-        }
-        if ('' === $entrypoint) {
-            throw new Exception\ConfigIsEmpty($name);
-        }
-
-        return Filesystem\Path::join($this->webDirectory, $entrypoint);
+        return $this->templateRenderer->dump($templateFile, $entrypoint->getMainEntrypoint(), $variables);
     }
 }
