@@ -43,12 +43,16 @@ Enable this extension in your `codeception.yml`:
 extensions:
   enabled:
     - EliasHaeussler\Typo3CodeceptionHelper\Codeception\Extension\ApplicationEntrypointModifier:
-        web-dir: .Build/web
-        main-entrypoint: index.php
-        app-entrypoint: app.php
+        entrypoints:
+          - web-dir: .Build/web
+            main-entrypoint: index.php
+            app-entrypoint: app.php
+          - web-dir: .Build/web/typo3
+            main-entrypoint: index.php
+            app-entrypoint: app.php
 ```
 
-The following config must be provided:
+For each entrypoint, the following config must be provided:
 
 | Config name       | Description                                                                    | Default value |
 |-------------------|--------------------------------------------------------------------------------|---------------|
