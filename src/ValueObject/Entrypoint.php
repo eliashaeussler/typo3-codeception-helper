@@ -26,6 +26,8 @@ namespace EliasHaeussler\Typo3CodeceptionHelper\ValueObject;
 use EliasHaeussler\Typo3CodeceptionHelper\Exception;
 use Symfony\Component\Filesystem;
 
+use function array_key_exists;
+
 /**
  * Entrypoint.
  *
@@ -56,23 +58,28 @@ final class Entrypoint
     public static function fromConfig(array $config, string $baseDirectory): self
     {
         $webDirectory = Filesystem\Path::join($baseDirectory, self::parseConfig($config, 'web-dir'));
-        $mainEntrypoint = Filesystem\Path::join($webDirectory, self::parseConfig($config, 'main-entrypoint'));
-        $appEntrypoint = Filesystem\Path::join($webDirectory, self::parseConfig($config, 'app-entrypoint'));
+        $mainEntrypoint = Filesystem\Path::join($webDirectory, self::parseConfig($config, 'main-entrypoint', 'index.php'));
+        $appEntrypoint = Filesystem\Path::join($webDirectory, self::parseConfig($config, 'app-entrypoint', 'app.php'));
 
         return new self($webDirectory, $mainEntrypoint, $appEntrypoint);
     }
 
     /**
-     * @param array<string, mixed> $config
-     * @param non-empty-string     $name
+     * @param array<string, mixed>  $config
+     * @param non-empty-string      $name
+     * @param non-empty-string|null $default
      *
      * @return non-empty-string
      *
      * @throws Exception\ConfigIsEmpty
      * @throws Exception\ConfigIsInvalid
      */
-    private static function parseConfig(array $config, string $name): string
+    private static function parseConfig(array $config, string $name, string $default = null): string
     {
+        if (!array_key_exists($name, $config) && null !== $default) {
+            return $default;
+        }
+
         $value = $config[$name] ?? null;
 
         if (!is_string($value)) {

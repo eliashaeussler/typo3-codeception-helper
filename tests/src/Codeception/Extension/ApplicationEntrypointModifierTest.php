@@ -61,8 +61,6 @@ final class ApplicationEntrypointModifierTest extends Framework\TestCase
                 'entrypoints' => [
                     [
                         'web-dir' => 'public',
-                        'main-entrypoint' => 'index.php',
-                        'app-entrypoint' => 'app.php',
                     ],
                 ],
             ],

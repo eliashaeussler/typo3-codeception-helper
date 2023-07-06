@@ -122,6 +122,26 @@ final class EntrypointTest extends Framework\TestCase
     }
 
     #[Framework\Attributes\Test]
+    public function fromConfigUsesDefaultValuesForEntrypoints(): void
+    {
+        $expected = new Src\ValueObject\Entrypoint(
+            __DIR__.'/public',
+            __DIR__.'/public/index.php',
+            __DIR__.'/public/app.php',
+        );
+
+        self::assertEquals(
+            $expected,
+            Src\ValueObject\Entrypoint::fromConfig(
+                [
+                    'web-dir' => 'public',
+                ],
+                __DIR__,
+            ),
+        );
+    }
+
+    #[Framework\Attributes\Test]
     public function fromConfigReturnsEntrypointFromGivenConfig(): void
     {
         $expected = new Src\ValueObject\Entrypoint(
