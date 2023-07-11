@@ -21,12 +21,11 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3CodeceptionHelper\Tests\src\Helper;
+namespace EliasHaeussler\Typo3CodeceptionHelper\Tests\Helper;
 
 use EliasHaeussler\Typo3CodeceptionHelper as Src;
 use PHPUnit\Framework;
 use Symfony\Component\Filesystem;
-
 use function dirname;
 use function sys_get_temp_dir;
 

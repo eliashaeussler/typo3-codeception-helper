@@ -21,14 +21,13 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3CodeceptionHelper\Tests\src\Codeception\Extension;
+namespace EliasHaeussler\Typo3CodeceptionHelper\Tests\Codeception\Extension;
 
 use Codeception\Configuration;
 use EliasHaeussler\Typo3CodeceptionHelper as Src;
 use PHPUnit\Framework;
 use Symfony\Component\Filesystem;
 use Symfony\Component\Finder;
-
 use function dirname;
 use function sleep;
 

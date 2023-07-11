@@ -7,6 +7,7 @@
     <testsuites>
         <testsuite name="tests">
             <directory>tests/src</directory>
+            <exclude>tests/src/Fixtures</exclude>
         </testsuite>
     </testsuites>
     <coverage>

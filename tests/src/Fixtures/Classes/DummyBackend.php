@@ -21,21 +21,21 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use EliasHaeussler\RectorConfig\Config\Config;
-use Rector\Config\RectorConfig;
-use Rector\Core\ValueObject\PhpVersion;
+namespace EliasHaeussler\Typo3CodeceptionHelper\Tests\Fixtures\Classes;
 
-return static function (RectorConfig $rectorConfig): void {
-    Config::create($rectorConfig, PhpVersion::PHP_81)
-        ->in(
-            __DIR__.'/src',
-            __DIR__.'/tests',
-        )
-        ->not(
-            __DIR__.'/c3.php',
-            __DIR__.'/tests/src/Fixtures/Codeception/support/_generated/*',
-        )
-        ->withPHPUnit()
-        ->apply()
-    ;
-};
+use EliasHaeussler\Typo3CodeceptionHelper\Codeception;
+use EliasHaeussler\Typo3CodeceptionHelper\Tests;
+
+/**
+ * DummyBackend.
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ *
+ * @internal
+ *
+ * @extends Codeception\Helper\AbstractBackend<Tests\Fixtures\Codeception\support\AcceptanceTester|Tests\Fixtures\Codeception\support\AcceptanceBrokenTester>
+ */
+final class DummyBackend extends Codeception\Helper\AbstractBackend
+{
+}

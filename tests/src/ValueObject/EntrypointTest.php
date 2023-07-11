@@ -21,7 +21,7 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3CodeceptionHelper\Tests\src\ValueObject;
+namespace EliasHaeussler\Typo3CodeceptionHelper\Tests\ValueObject;
 
 use EliasHaeussler\Typo3CodeceptionHelper as Src;
 use PHPUnit\Framework;

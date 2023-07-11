@@ -21,21 +21,23 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use EliasHaeussler\RectorConfig\Config\Config;
-use Rector\Config\RectorConfig;
-use Rector\Core\ValueObject\PhpVersion;
+namespace EliasHaeussler\Typo3CodeceptionHelper\Tests\Fixtures\Codeception\support;
 
-return static function (RectorConfig $rectorConfig): void {
-    Config::create($rectorConfig, PhpVersion::PHP_81)
-        ->in(
-            __DIR__.'/src',
-            __DIR__.'/tests',
-        )
-        ->not(
-            __DIR__.'/c3.php',
-            __DIR__.'/tests/src/Fixtures/Codeception/support/_generated/*',
-        )
-        ->withPHPUnit()
-        ->apply()
-    ;
-};
+use Codeception\Actor;
+
+/**
+ * @method void wantTo($text)
+ * @method void wantToTest($text)
+ * @method void execute($callable)
+ * @method void expectTo($prediction)
+ * @method void expect($prediction)
+ * @method void amGoingTo($argumentation)
+ * @method void am($role)
+ * @method void lookForwardTo($achieveValue)
+ * @method void comment($description)
+ * @method void pause($vars = [])
+ */
+final class AcceptanceTester extends Actor
+{
+    use _generated\AcceptanceTesterActions;
+}

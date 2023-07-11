@@ -38,7 +38,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "EliasHaeussler\\Typo3CodeceptionHelper\\Tests\\": "tests/"
+            "EliasHaeussler\\Typo3CodeceptionHelper\\Tests\\": "tests/src/"
         }
     },
     "config": {
@@ -52,6 +52,9 @@
         "sort-packages": true
     },
     "scripts": {
+        "post-autoload-dump": [
+            "codecept build -c tests/src/Fixtures/Codeception/codeception.yml"
+        ],
         "fix": [
             "@fix:composer",
             "@fix:editorconfig",

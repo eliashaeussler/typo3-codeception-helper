@@ -1,3 +1,18 @@
+namespace: EliasHaeussler\Typo3CodeceptionHelper\Tests\Fixtures\Codeception\support
+
+suites:
+  Acceptance:
+    actor: AcceptanceTester
+    path: .
+    modules:
+      enabled:
+        - WebDriver:
+            url: 'http://localhost'
+            browser: chrome
+  AcceptanceBroken:
+    actor: AcceptanceBrokenTester
+    path: .
+
 paths:
   tests: tests
   output: output

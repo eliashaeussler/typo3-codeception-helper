@@ -21,21 +21,39 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use EliasHaeussler\RectorConfig\Config\Config;
-use Rector\Config\RectorConfig;
-use Rector\Core\ValueObject\PhpVersion;
+namespace EliasHaeussler\Typo3CodeceptionHelper\Tests\Fixtures\Classes;
 
-return static function (RectorConfig $rectorConfig): void {
-    Config::create($rectorConfig, PhpVersion::PHP_81)
-        ->in(
-            __DIR__.'/src',
-            __DIR__.'/tests',
-        )
-        ->not(
-            __DIR__.'/c3.php',
-            __DIR__.'/tests/src/Fixtures/Codeception/support/_generated/*',
-        )
-        ->withPHPUnit()
-        ->apply()
-    ;
-};
+use Codeception\ResultAggregator;
+use Codeception\Test;
+use Codeception\TestInterface;
+
+/**
+ * DummyTest.
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ *
+ * @internal
+ */
+final class DummyTest implements TestInterface
+{
+    public function count(): int
+    {
+        return 0;
+    }
+
+    public function run(): void
+    {
+        // Intentionally left blank.
+    }
+
+    public function getMetadata(): Test\Metadata
+    {
+        return new Test\Metadata();
+    }
+
+    public function getResultAggregator(): ResultAggregator
+    {
+        return new ResultAggregator();
+    }
+}
