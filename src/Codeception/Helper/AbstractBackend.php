@@ -29,14 +29,14 @@ use Exception;
 use TYPO3\TestingFramework;
 
 /**
- * Backend.
+ * AbstractBackend.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  *
  * @template TTester of Actor
  */
-abstract class Backend
+abstract class AbstractBackend
 {
     /**
      * @phpstan-param TTester $tester

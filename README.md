@@ -26,9 +26,9 @@ composer require --dev eliashaeussler/typo3-codeception-helper
 
 ## ⚡ Usage
 
-### `Backend` helper
+### `AbstractBackend` helper
 
-> Source: [`Codeception\Helper\Backend`](src/Codeception/Helper/Backend.php)
+> Source: [`Codeception\Helper\AbstractBackend`](src/Codeception/Helper/AbstractBackend.php)
 
 A Codeception helper that allows to perform actions within TYPO3
 backend.
@@ -45,10 +45,11 @@ use EliasHaeussler\Typo3CodeceptionHelper;
 use TYPO3\TestingFramework;
 use Vendor\Extension\Tests;
 
-final class Backend extends Typo3CodeceptionHelper\Codeception\Helper\Backend
+final class Backend extends Typo3CodeceptionHelper\Codeception\Helper\AbstractBackend
 {
     public function __construct(
         Tests\Acceptance\Support\AcceptanceTester $tester,
+        // You need to create this helper class by your own, see notice below
         Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
     ) {
         parent::__construct($tester, $modalDialog);
@@ -56,19 +57,55 @@ final class Backend extends Typo3CodeceptionHelper\Codeception\Helper\Backend
 }
 ```
 
-Now add the helper to your `codeception.yml` file:
+> **Note** The `AbstractBackend` helper requires a concrete
+> implementation of the
+> [`AbstractModalDialog`](https://github.com/TYPO3/testing-framework/blob/main/Classes/Core/Acceptance/Helper/AbstractModalDialog.php)
+> helper from TYPO3 testing framework.
+>
+> Make sure to subclass this helper and inject your actor:
+>
+> ```php
+> <?php
+>
+> namespace Vendor\Extension\Tests\Acceptance\Support\Helper;
+>
+> use TYPO3\TestingFramework;
+> use Vendor\Extension\Tests;
+>
+> final class ModalDialog extends TestingFramework\Core\Acceptance\Helper\AbstractModalDialog
+> {
+>     public function __construct(
+>         Tests\Acceptance\Support\AcceptanceTester $tester,
+>     ) {
+>         $this->tester = $tester;
+>     }
+> }
+> ```
 
-```yaml
-# codeception.yml
+Now inject the helper into your test:
 
-suites:
-  Acceptance:
-    modules:
-      enabled:
-        - Vendor\Extension\Tests\Acceptance\Support\Helper\Backend
+```php
+<?php
+
+namespace Vendor\Extension\Tests\Acceptance\Backend;
+
+use Vendor\Extension\Tests;
+
+final class MyFancyBackendCest
+{
+    /**
+     * Perform backend login before each test case.
+     */
+    public function _before(Tests\Acceptance\Support\Helper\Backend $backend): void
+    {
+        $backend->login('admin', 'password');
+    }
+
+    // ...
+}
 ```
 
-### Application entrypoint modifier extension
+### `ApplicationEntrypointModifier` extension
 
 > Source: [`Codeception\Extension\ApplicationEntrypointModifier`](src/Codeception/Extension/ApplicationEntrypointModifier.php)
 

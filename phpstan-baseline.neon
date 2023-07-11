@@ -8,4 +8,4 @@ parameters:
 		-
 			message: "#^PHPDoc tag @var with type Codeception\\\\Module\\\\WebDriver is not subtype of native type Codeception\\\\Actor\\.$#"
 			count: 2
-			path: src/Codeception/Helper/Backend.php
+			path: src/Codeception/Helper/AbstractBackend.php
