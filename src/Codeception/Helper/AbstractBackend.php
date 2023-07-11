@@ -25,8 +25,10 @@ namespace EliasHaeussler\Typo3CodeceptionHelper\Codeception\Helper;
 
 use Codeception\Actor;
 use Codeception\Module;
-use Exception;
+use EliasHaeussler\Typo3CodeceptionHelper\Exception;
 use TYPO3\TestingFramework;
+
+use function method_exists;
 
 /**
  * AbstractBackend.
@@ -40,11 +42,16 @@ abstract class AbstractBackend
 {
     /**
      * @phpstan-param TTester $tester
+     *
+     * @throws Exception\ModuleIsNotEnabled
      */
     public function __construct(
         protected readonly Actor $tester,
         protected readonly TestingFramework\Core\Acceptance\Helper\AbstractModalDialog $modalDialog,
     ) {
+        if (!method_exists($this->tester, 'amOnPage')) {
+            throw new Exception\ModuleIsNotEnabled('WebDriver');
+        }
     }
 
     public function login(string $username = 'admin', string $password = 'password'): void
@@ -62,14 +69,11 @@ abstract class AbstractBackend
 
         try {
             $this->modalDialog->clickButtonInDialog('[name=ok]');
-        } catch (Exception) {
+        } catch (\Exception) {
             // If dialog is not present, that's fine...
         }
     }
 
-    /**
-     * @throws Exception
-     */
     public function openModule(string $identifier): void
     {
         /** @var Module\WebDriver $I */
