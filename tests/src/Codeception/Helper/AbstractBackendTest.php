@@ -26,6 +26,7 @@ namespace EliasHaeussler\Typo3CodeceptionHelper\Tests\Codeception\Helper;
 use EliasHaeussler\Typo3CodeceptionHelper as Src;
 use EliasHaeussler\Typo3CodeceptionHelper\Tests;
 use PHPUnit\Framework;
+
 use function count;
 
 /**

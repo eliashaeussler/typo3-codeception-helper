@@ -26,6 +26,7 @@ namespace EliasHaeussler\Typo3CodeceptionHelper\Tests\Helper;
 use EliasHaeussler\Typo3CodeceptionHelper as Src;
 use PHPUnit\Framework;
 use Symfony\Component\Filesystem;
+
 use function dirname;
 use function sys_get_temp_dir;
 

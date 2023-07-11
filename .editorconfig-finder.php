@@ -28,6 +28,7 @@ return Finder\Finder::create()
     ->notPath([
         '.build',
         'public',
+        'tests/src/Fixtures/Codeception/support/_generated',
         'vendor',
     ])
     ->notName([
