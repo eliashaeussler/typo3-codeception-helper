@@ -38,17 +38,14 @@ use function count;
 final class AbstractBackendTest extends Framework\TestCase
 {
     private Tests\Fixtures\Classes\DummyScenario $scenario;
-    private Tests\Fixtures\Classes\DummyModalDialog $modalDialog;
     private Tests\Fixtures\Classes\DummyBackend $subject;
 
     protected function setUp(): void
     {
         $this->scenario = new Tests\Fixtures\Classes\DummyScenario();
-
-        $tester = new Tests\Fixtures\Codeception\support\AcceptanceTester($this->scenario);
-
-        $this->modalDialog = new Tests\Fixtures\Classes\DummyModalDialog($tester);
-        $this->subject = new Tests\Fixtures\Classes\DummyBackend($tester, $this->modalDialog);
+        $this->subject = new Tests\Fixtures\Classes\DummyBackend(
+            new Tests\Fixtures\Codeception\support\AcceptanceTester($this->scenario),
+        );
     }
 
     #[Framework\Attributes\Test]
@@ -58,10 +55,7 @@ final class AbstractBackendTest extends Framework\TestCase
 
         $this->expectExceptionObject(new Src\Exception\ModuleIsNotEnabled('WebDriver'));
 
-        new Tests\Fixtures\Classes\DummyBackend(
-            $tester,
-            new Tests\Fixtures\Classes\DummyModalDialog($tester),
-        );
+        new Tests\Fixtures\Classes\DummyBackend($tester);
     }
 
     #[Framework\Attributes\Test]
@@ -74,12 +68,8 @@ final class AbstractBackendTest extends Framework\TestCase
             'fillField',
             'fillField',
             'click',
-            'dontSeeElement',
-            'switchToIFrame',
-            'waitForElement',
-            'wait',
-            'click',
             'waitForElementNotVisible',
+            'seeCookie',
         ];
 
         $this->subject->login();
@@ -89,16 +79,6 @@ final class AbstractBackendTest extends Framework\TestCase
         foreach ($expected as $i => $action) {
             self::assertSame($action, $this->scenario->executedSteps[$i]->getAction());
         }
-    }
-
-    #[Framework\Attributes\Test]
-    public function loginIgnoresErrorsIfModalDialogDoesNotAppearAfterBackendLogin(): void
-    {
-        $this->expectNotToPerformAssertions();
-
-        $this->modalDialog->throwExceptionOnButtonClick = true;
-
-        $this->subject->login();
     }
 
     #[Framework\Attributes\Test]

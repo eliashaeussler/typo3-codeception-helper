@@ -9,8 +9,3 @@ parameters:
 			message: "#^PHPDoc tag @var with type Codeception\\\\Module\\\\WebDriver is not subtype of native type Codeception\\\\Actor\\.$#"
 			count: 2
 			path: src/Codeception/Helper/AbstractBackend.php
-
-		-
-			message: "#^Property TYPO3\\\\TestingFramework\\\\Core\\\\Acceptance\\\\Helper\\\\AbstractModalDialog\\:\\:\\$tester \\(TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Acceptance\\\\Support\\\\ApplicationTester\\) does not accept Codeception\\\\Actor\\.$#"
-			count: 1
-			path: tests/src/Fixtures/Classes/DummyModalDialog.php

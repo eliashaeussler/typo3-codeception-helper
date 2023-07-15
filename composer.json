@@ -16,8 +16,7 @@
         "composer-runtime-api": "^2.1",
         "codeception/c3": "^2.8",
         "codeception/codeception": "^4.1.11 || ^5.0",
-        "symfony/filesystem": "^5.4 || ^6.0",
-        "typo3/testing-framework": "^7.0 || ^8.0"
+        "symfony/filesystem": "^5.4 || ^6.0"
     },
     "require-dev": {
         "armin/editorconfig-cli": "^1.5",
@@ -45,9 +44,7 @@
         "allow-plugins": {
             "codeception/c3": true,
             "ergebnis/composer-normalize": true,
-            "phpstan/extension-installer": true,
-            "typo3/class-alias-loader": true,
-            "typo3/cms-composer-installers": true
+            "phpstan/extension-installer": true
         },
         "sort-packages": true
     },
