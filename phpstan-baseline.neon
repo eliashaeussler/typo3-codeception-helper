@@ -6,6 +6,6 @@ parameters:
 			path: src/Codeception/Extension/ApplicationEntrypointModifier.php
 
 		-
-			message: "#^PHPDoc tag @var with type Codeception\\\\Module\\\\WebDriver is not subtype of native type Codeception\\\\Actor\\.$#"
-			count: 2
-			path: src/Codeception/Helper/AbstractBackend.php
+			message: "#^PHPDoc type array\\<string, array\\<string, string\\>\\> of property EliasHaeussler\\\\Typo3CodeceptionHelper\\\\Codeception\\\\Module\\\\Backend\\:\\:\\$config is not the same as PHPDoc type array of overridden property Codeception\\\\Module\\:\\:\\$config\\.$#"
+			count: 1
+			path: src/Codeception/Module/Backend.php

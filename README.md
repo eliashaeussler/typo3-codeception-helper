@@ -26,65 +26,40 @@ composer require --dev eliashaeussler/typo3-codeception-helper
 
 ## ⚡ Usage
 
-### `AbstractBackend` helper
+### `Backend` module
 
-> Source: [`Codeception\Helper\AbstractBackend`](src/Codeception/Helper/AbstractBackend.php)
+> Source: [`Codeception\Module\Backend`](src/Codeception/Module/Backend.php)
 
-A Codeception helper that allows to perform actions within TYPO3
-backend.
+A Codeception module that allows to perform actions within TYPO3
+backend. It can for example be used to log into the TYPO3 backend.
 
-**You need to subclass this helper and inject your actor:**
+Enable this module in your `codeception.yml` file:
 
-```php
-<?php
+```yaml
+# codeception.yml
 
-namespace Vendor\Extension\Tests\Acceptance\Support\Helper;
-
-use EliasHaeussler\Typo3CodeceptionHelper;
-use Vendor\Extension\Tests;
-
-final class Backend extends Typo3CodeceptionHelper\Codeception\Helper\AbstractBackend
-{
-    // Configure all available backend users here (username <> password mapping)
-    protected static array $userCredentials = [
-        'admin' => 'password',
-        'editor' => 'password',
-    ];
-
-    public function __construct(Tests\Acceptance\Support\AcceptanceTester $tester)
-    {
-        parent::__construct($tester);
-    }
-}
+suites:
+  Acceptance:
+    actor: AcceptanceTester
+    modules:
+      enabled:
+        - EliasHaeussler\Typo3CodeceptionHelper\Codeception\Module\Backend
 ```
 
-Now inject the helper into your test:
+In order to use the `loginAs()` method, all backend users must be
+configured in the module config section:
 
-```php
-<?php
-
-namespace Vendor\Extension\Tests\Acceptance\Backend;
-
-use Vendor\Extension\Tests;
-
-final class MyFancyBackendCest
-{
-    /**
-     * Perform backend login before each test case.
-     */
-    public function _before(Tests\Acceptance\Support\Helper\Backend $backend): void
-    {
-        $backend->login('admin', 'password');
-        $backend->login('editor', 'password');
-
-        // or using the configured user credentials
-
-        $backend->loginAs('admin');
-        $backend->loginAs('editor');
-    }
-
-    // ...
-}
+```diff
+ suites:
+   Acceptance:
+     actor: AcceptanceTester
+     modules:
+       enabled:
+-        - EliasHaeussler\Typo3CodeceptionHelper\Codeception\Module\Backend
++        - EliasHaeussler\Typo3CodeceptionHelper\Codeception\Module\Backend:
++            userCredentials:
++              admin: password
++              editor: password
 ```
 
 ### `ApplicationEntrypointModifier` extension

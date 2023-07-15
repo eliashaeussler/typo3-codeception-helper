@@ -21,53 +21,34 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3CodeceptionHelper\Codeception\Helper;
+namespace EliasHaeussler\Typo3CodeceptionHelper\Codeception\Module;
 
-use Codeception\Actor;
 use Codeception\Module;
 use EliasHaeussler\Typo3CodeceptionHelper\Enums;
-use EliasHaeussler\Typo3CodeceptionHelper\Exception;
 
-use function method_exists;
+use function sprintf;
 
 /**
- * AbstractBackend.
+ * Backend.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
- *
- * @template TTester of Actor
  */
-abstract class AbstractBackend
+final class Backend extends Module
 {
     /**
-     * @var array<non-empty-string, non-empty-string>
+     * @var array{userCredentials: array<string, string>}
      */
-    protected static array $userCredentials = [
-        'admin' => 'password',
+    protected array $config = [
+        'userCredentials' => [
+            'admin' => 'password',
+        ],
     ];
 
-    /**
-     * @phpstan-param TTester $tester
-     *
-     * @throws Exception\ModuleIsNotEnabled
-     */
-    public function __construct(
-        protected readonly Actor $tester,
-    ) {
-        if (!method_exists($this->tester, 'amOnPage')) {
-            throw new Exception\ModuleIsNotEnabled('WebDriver');
-        }
-    }
-
-    /**
-     * @param non-empty-string $username
-     * @param non-empty-string $password
-     */
     public function login(string $username, string $password): void
     {
         /** @var Module\WebDriver $I */
-        $I = $this->tester;
+        $I = $this->getModule('WebDriver');
 
         $I->amOnPage('/typo3/');
         $I->waitForElementVisible(Enums\Selectors::BackendLoginUsernameField->value);
@@ -81,22 +62,22 @@ abstract class AbstractBackend
 
     /**
      * @param non-empty-string $username
-     *
-     * @throws Exception\UserIsNotConfigured
      */
     public function loginAs(string $username): void
     {
-        if (!isset(static::$userCredentials[$username])) {
-            throw new Exception\UserIsNotConfigured($username);
+        if (!is_string($this->config['userCredentials'][$username] ?? null)) {
+            $this->fail(
+                sprintf('A user with username "%s" is not configured.', $username),
+            );
         }
 
-        $this->login($username, static::$userCredentials[$username]);
+        $this->login($username, $this->config['userCredentials'][$username]);
     }
 
     public function openModule(string $identifier): void
     {
         /** @var Module\WebDriver $I */
-        $I = $this->tester;
+        $I = $this->getModule('WebDriver');
 
         $I->waitForElementClickable($identifier, 5);
         $I->click($identifier);

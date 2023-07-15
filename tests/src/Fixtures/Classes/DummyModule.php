@@ -23,19 +23,31 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3CodeceptionHelper\Tests\Fixtures\Classes;
 
-use EliasHaeussler\Typo3CodeceptionHelper\Codeception;
-use EliasHaeussler\Typo3CodeceptionHelper\Tests;
+use Codeception\Module;
 
 /**
- * DummyBackend.
+ * DummyModule.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  *
  * @internal
- *
- * @extends Codeception\Helper\AbstractBackend<Tests\Fixtures\Codeception\support\AcceptanceTester|Tests\Fixtures\Codeception\support\AcceptanceBrokenTester>
  */
-final class DummyBackend extends Codeception\Helper\AbstractBackend
+final class DummyModule extends Module
 {
+    /**
+     * @var list<array{step: string, arguments: array<mixed>}>
+     */
+    public array $executedSteps = [];
+
+    /**
+     * @param array<mixed> $arguments
+     */
+    public function __call(string $name, array $arguments): void
+    {
+        $this->executedSteps[] = [
+            'step' => $name,
+            'arguments' => $arguments,
+        ];
+    }
 }

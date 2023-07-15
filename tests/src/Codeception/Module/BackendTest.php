@@ -21,8 +21,9 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3CodeceptionHelper\Tests\Codeception\Helper;
+namespace EliasHaeussler\Typo3CodeceptionHelper\Tests\Codeception\Module;
 
+use Codeception\Lib;
 use EliasHaeussler\Typo3CodeceptionHelper as Src;
 use EliasHaeussler\Typo3CodeceptionHelper\Tests;
 use PHPUnit\Framework;
@@ -30,32 +31,24 @@ use PHPUnit\Framework;
 use function count;
 
 /**
- * AbstractBackendTest.
+ * BackendTest.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class AbstractBackendTest extends Framework\TestCase
+final class BackendTest extends Framework\TestCase
 {
-    private Tests\Fixtures\Classes\DummyScenario $scenario;
-    private Tests\Fixtures\Classes\DummyBackend $subject;
+    private Tests\Fixtures\Classes\DummyModule $webDriver;
+    private Src\Codeception\Module\Backend $subject;
 
     protected function setUp(): void
     {
-        $this->scenario = new Tests\Fixtures\Classes\DummyScenario();
-        $this->subject = new Tests\Fixtures\Classes\DummyBackend(
-            new Tests\Fixtures\Codeception\support\AcceptanceTester($this->scenario),
-        );
-    }
+        $moduleContainer = new Lib\ModuleContainer(new Lib\Di(), []);
 
-    #[Framework\Attributes\Test]
-    public function constructorThrowsExceptionIfWebDriverModuleIsNotEnabled(): void
-    {
-        $tester = new Tests\Fixtures\Codeception\support\AcceptanceBrokenTester($this->scenario);
+        $this->webDriver = new Tests\Fixtures\Classes\DummyModule($moduleContainer);
+        $this->subject = new Src\Codeception\Module\Backend($moduleContainer);
 
-        $this->expectExceptionObject(new Src\Exception\ModuleIsNotEnabled('WebDriver'));
-
-        new Tests\Fixtures\Classes\DummyBackend($tester);
+        $moduleContainer->mock('WebDriver', $this->webDriver);
     }
 
     #[Framework\Attributes\Test]
@@ -74,17 +67,19 @@ final class AbstractBackendTest extends Framework\TestCase
 
         $this->subject->login('admin', 'password');
 
-        self::assertCount(count($expected), $this->scenario->executedSteps);
+        self::assertCount(count($expected), $this->webDriver->executedSteps);
 
         foreach ($expected as $i => $action) {
-            self::assertSame($action, $this->scenario->executedSteps[$i]->getAction());
+            self::assertSame($action, $this->webDriver->executedSteps[$i]['step']);
         }
     }
 
     #[Framework\Attributes\Test]
     public function loginAsThrowsExceptionIfGivenUserIsNotConfigured(): void
     {
-        $this->expectExceptionObject(new Src\Exception\UserIsNotConfigured('foo'));
+        $this->expectExceptionObject(
+            new Framework\AssertionFailedError('A user with username "foo" is not configured.'),
+        );
 
         $this->subject->loginAs('foo');
     }
@@ -94,13 +89,13 @@ final class AbstractBackendTest extends Framework\TestCase
     {
         $this->subject->loginAs('admin');
 
-        $stepsWithoutPassword = $this->scenario->executedSteps;
+        $stepsWithoutPassword = $this->webDriver->executedSteps;
 
-        $this->scenario->executedSteps = [];
+        $this->webDriver->executedSteps = [];
 
         $this->subject->login('admin', 'password');
 
-        $stepsWithPassword = $this->scenario->executedSteps;
+        $stepsWithPassword = $this->webDriver->executedSteps;
 
         self::assertEquals($stepsWithoutPassword, $stepsWithPassword);
     }
@@ -116,10 +111,10 @@ final class AbstractBackendTest extends Framework\TestCase
 
         $this->subject->openModule('foo');
 
-        self::assertCount(count($expected), $this->scenario->executedSteps);
+        self::assertCount(count($expected), $this->webDriver->executedSteps);
 
         foreach ($expected as $i => $action) {
-            self::assertSame($action, $this->scenario->executedSteps[$i]->getAction());
+            self::assertSame($action, $this->webDriver->executedSteps[$i]['step']);
         }
     }
 }
