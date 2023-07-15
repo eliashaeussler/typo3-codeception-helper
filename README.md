@@ -45,6 +45,12 @@ use Vendor\Extension\Tests;
 
 final class Backend extends Typo3CodeceptionHelper\Codeception\Helper\AbstractBackend
 {
+    // Configure all available backend users here (username <> password mapping)
+    protected static array $userCredentials = [
+        'admin' => 'password',
+        'editor' => 'password',
+    ];
+
     public function __construct(Tests\Acceptance\Support\AcceptanceTester $tester)
     {
         parent::__construct($tester);
@@ -69,6 +75,12 @@ final class MyFancyBackendCest
     public function _before(Tests\Acceptance\Support\Helper\Backend $backend): void
     {
         $backend->login('admin', 'password');
+        $backend->login('editor', 'password');
+
+        // or using the configured user credentials
+
+        $backend->loginAs('admin');
+        $backend->loginAs('editor');
     }
 
     // ...

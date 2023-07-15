@@ -72,13 +72,37 @@ final class AbstractBackendTest extends Framework\TestCase
             'seeCookie',
         ];
 
-        $this->subject->login();
+        $this->subject->login('admin', 'password');
 
         self::assertCount(count($expected), $this->scenario->executedSteps);
 
         foreach ($expected as $i => $action) {
             self::assertSame($action, $this->scenario->executedSteps[$i]->getAction());
         }
+    }
+
+    #[Framework\Attributes\Test]
+    public function loginAsThrowsExceptionIfGivenUserIsNotConfigured(): void
+    {
+        $this->expectExceptionObject(new Src\Exception\UserIsNotConfigured('foo'));
+
+        $this->subject->loginAs('foo');
+    }
+
+    #[Framework\Attributes\Test]
+    public function loginAsPerformsBackendLoginForGivenUser(): void
+    {
+        $this->subject->loginAs('admin');
+
+        $stepsWithoutPassword = $this->scenario->executedSteps;
+
+        $this->scenario->executedSteps = [];
+
+        $this->subject->login('admin', 'password');
+
+        $stepsWithPassword = $this->scenario->executedSteps;
+
+        self::assertEquals($stepsWithoutPassword, $stepsWithPassword);
     }
 
     #[Framework\Attributes\Test]

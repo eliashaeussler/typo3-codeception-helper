@@ -40,6 +40,13 @@ use function method_exists;
 abstract class AbstractBackend
 {
     /**
+     * @var array<non-empty-string, non-empty-string>
+     */
+    protected static array $userCredentials = [
+        'admin' => 'password',
+    ];
+
+    /**
      * @phpstan-param TTester $tester
      *
      * @throws Exception\ModuleIsNotEnabled
@@ -52,7 +59,11 @@ abstract class AbstractBackend
         }
     }
 
-    public function login(string $username = 'admin', string $password = 'password'): void
+    /**
+     * @param non-empty-string $username
+     * @param non-empty-string $password
+     */
+    public function login(string $username, string $password): void
     {
         /** @var Module\WebDriver $I */
         $I = $this->tester;
@@ -65,6 +76,20 @@ abstract class AbstractBackend
         $I->click('#t3-login-submit');
         $I->waitForElementNotVisible('#typo3-login-form');
         $I->seeCookie('be_typo_user');
+    }
+
+    /**
+     * @param non-empty-string $username
+     *
+     * @throws Exception\UserIsNotConfigured
+     */
+    public function loginAs(string $username): void
+    {
+        if (!isset(static::$userCredentials[$username])) {
+            throw new Exception\UserIsNotConfigured($username);
+        }
+
+        $this->login($username, static::$userCredentials[$username]);
     }
 
     public function openModule(string $identifier): void
