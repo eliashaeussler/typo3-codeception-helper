@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3CodeceptionHelper\Codeception\Helper;
 
 use Codeception\Actor;
 use Codeception\Module;
+use EliasHaeussler\Typo3CodeceptionHelper\Enums;
 use EliasHaeussler\Typo3CodeceptionHelper\Exception;
 
 use function method_exists;
@@ -69,12 +70,12 @@ abstract class AbstractBackend
         $I = $this->tester;
 
         $I->amOnPage('/typo3/');
-        $I->waitForElementVisible('#t3-username');
-        $I->waitForElementVisible('#t3-password');
-        $I->fillField('#t3-username', $username);
-        $I->fillField('#t3-password', $password);
-        $I->click('#t3-login-submit');
-        $I->waitForElementNotVisible('#typo3-login-form');
+        $I->waitForElementVisible(Enums\Selectors::BackendLoginUsernameField->value);
+        $I->waitForElementVisible(Enums\Selectors::BackendLoginPasswordField->value);
+        $I->fillField(Enums\Selectors::BackendLoginUsernameField->value, $username);
+        $I->fillField(Enums\Selectors::BackendLoginPasswordField->value, $password);
+        $I->click(Enums\Selectors::BackendLoginSubmitButton->value);
+        $I->waitForElementNotVisible(Enums\Selectors::BackendLoginForm->value);
         $I->seeCookie('be_typo_user');
     }
 
@@ -99,6 +100,6 @@ abstract class AbstractBackend
 
         $I->waitForElementClickable($identifier, 5);
         $I->click($identifier);
-        $I->switchToIFrame('#typo3-contentIframe');
+        $I->switchToIFrame(Enums\Selectors::BackendContentFrame->value);
     }
 }
