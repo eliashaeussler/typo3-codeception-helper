@@ -27,7 +27,7 @@ use EliasHaeussler\Typo3CodeceptionHelper as Src;
 use PHPUnit\Framework;
 
 /**
- * Entrypoint.
+ * EntrypointTest.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
