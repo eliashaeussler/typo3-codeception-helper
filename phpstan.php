@@ -29,7 +29,7 @@ return PHPStanConfig\Config\Config::create(__DIR__)
         'tests',
     )
     ->not(
-        'tests/src/Fixtures/Codeception/support/_generated',
+        'tests/src/Fixtures/Codeception/support',
     )
     ->withBaseline()
     ->withBleedingEdge()

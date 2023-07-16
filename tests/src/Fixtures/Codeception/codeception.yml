@@ -9,9 +9,6 @@ suites:
         - WebDriver:
             url: 'http://localhost'
             browser: chrome
-  AcceptanceBroken:
-    actor: AcceptanceBrokenTester
-    path: .
 
 paths:
   tests: tests

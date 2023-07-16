@@ -33,7 +33,7 @@ return static function (RectorConfig $rectorConfig): void {
         )
         ->not(
             __DIR__.'/c3.php',
-            __DIR__.'/tests/src/Fixtures/Codeception/support/_generated/*',
+            __DIR__.'/tests/src/Fixtures/Codeception/support/*',
         )
         ->withPHPUnit()
         ->apply()
