@@ -26,42 +26,6 @@ composer require --dev eliashaeussler/typo3-codeception-helper
 
 ## ⚡ Usage
 
-### `Backend` module
-
-> Source: [`Codeception\Module\Backend`](src/Codeception/Module/Backend.php)
-
-A Codeception module that allows to perform actions within TYPO3
-backend. It can for example be used to log into the TYPO3 backend.
-
-Enable this module in your `codeception.yml` file:
-
-```yaml
-# codeception.yml
-
-suites:
-  Acceptance:
-    actor: AcceptanceTester
-    modules:
-      enabled:
-        - EliasHaeussler\Typo3CodeceptionHelper\Codeception\Module\Backend
-```
-
-In order to use the `loginAs()` method, all backend users must be
-configured in the module config section:
-
-```diff
- suites:
-   Acceptance:
-     actor: AcceptanceTester
-     modules:
-       enabled:
--        - EliasHaeussler\Typo3CodeceptionHelper\Codeception\Module\Backend
-+        - EliasHaeussler\Typo3CodeceptionHelper\Codeception\Module\Backend:
-+            userCredentials:
-+              admin: password
-+              editor: password
-```
-
 ### `ApplicationEntrypointModifier` extension
 
 > Source: [`Codeception\Extension\ApplicationEntrypointModifier`](src/Codeception/Extension/ApplicationEntrypointModifier.php)
@@ -114,6 +78,42 @@ directory structure exists after the test suite is started:
 └── web
     ├── app.php     # contains the original contents from index.php
     └── index.php   # generated entrypoint that includes c3.php and app.php
+```
+
+### `Backend` module
+
+> Source: [`Codeception\Module\Backend`](src/Codeception/Module/Backend.php)
+
+A Codeception module that allows to perform actions within TYPO3
+backend. It can for example be used to log into the TYPO3 backend.
+
+Enable this module in your `codeception.yml` file:
+
+```yaml
+# codeception.yml
+
+suites:
+  Acceptance:
+    actor: AcceptanceTester
+    modules:
+      enabled:
+        - EliasHaeussler\Typo3CodeceptionHelper\Codeception\Module\Backend
+```
+
+In order to use the `loginAs()` method, all backend users must be
+configured in the module config section:
+
+```diff
+ suites:
+   Acceptance:
+     actor: AcceptanceTester
+     modules:
+       enabled:
+-        - EliasHaeussler\Typo3CodeceptionHelper\Codeception\Module\Backend
++        - EliasHaeussler\Typo3CodeceptionHelper\Codeception\Module\Backend:
++            userCredentials:
++              admin: password
++              editor: password
 ```
 
 ## 🧑‍💻 Contributing
