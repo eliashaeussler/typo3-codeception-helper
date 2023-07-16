@@ -28,6 +28,9 @@ return PHPStanConfig\Config\Config::create(__DIR__)
         'src',
         'tests',
     )
+    ->not(
+        'tests/src/Fixtures/Codeception/support',
+    )
     ->withBaseline()
     ->withBleedingEdge()
     ->stubFiles(

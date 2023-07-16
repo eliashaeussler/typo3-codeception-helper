@@ -21,14 +21,12 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3CodeceptionHelper\Tests\src\Helper;
+namespace EliasHaeussler\Typo3CodeceptionHelper\Tests\Helper;
 
 use EliasHaeussler\Typo3CodeceptionHelper as Src;
 use PHPUnit\Framework;
-use Symfony\Component\Filesystem;
 
 use function dirname;
-use function sys_get_temp_dir;
 
 /**
  * PathHelperTest.
@@ -39,20 +37,6 @@ use function sys_get_temp_dir;
 #[Framework\Attributes\CoversClass(Src\Helper\PathHelper::class)]
 final class PathHelperTest extends Framework\TestCase
 {
-    /**
-     * @var non-empty-string
-     */
-    private string $testDirectory;
-    private Filesystem\Filesystem $filesystem;
-
-    protected function setUp(): void
-    {
-        $this->testDirectory = sys_get_temp_dir().'/typo3-codeception-helper-tests';
-        $this->filesystem = new Filesystem\Filesystem();
-
-        $this->filesystem->remove($this->testDirectory);
-    }
-
     #[Framework\Attributes\Test]
     public function getVendorDirectoryReturnsVendorDirectory(): void
     {
@@ -60,10 +44,5 @@ final class PathHelperTest extends Framework\TestCase
             dirname(__DIR__, 3).'/vendor',
             Src\Helper\PathHelper::getVendorDirectory(),
         );
-    }
-
-    protected function tearDown(): void
-    {
-        $this->filesystem->remove($this->testDirectory);
     }
 }

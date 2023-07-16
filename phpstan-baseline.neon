@@ -4,3 +4,8 @@ parameters:
 			message: "#^PHPDoc type array\\<string, array\\<int, array\\<string, mixed\\>\\>\\> of property EliasHaeussler\\\\Typo3CodeceptionHelper\\\\Codeception\\\\Extension\\\\ApplicationEntrypointModifier\\:\\:\\$config is not the same as PHPDoc type array\\<int\\|string, mixed\\> of overridden property Codeception\\\\Extension\\:\\:\\$config\\.$#"
 			count: 1
 			path: src/Codeception/Extension/ApplicationEntrypointModifier.php
+
+		-
+			message: "#^PHPDoc type array\\<string, array\\<string, string\\>\\> of property EliasHaeussler\\\\Typo3CodeceptionHelper\\\\Codeception\\\\Module\\\\Backend\\:\\:\\$config is not the same as PHPDoc type array of overridden property Codeception\\\\Module\\:\\:\\$config\\.$#"
+			count: 1
+			path: src/Codeception/Module/Backend.php

@@ -21,21 +21,19 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use EliasHaeussler\RectorConfig\Config\Config;
-use Rector\Config\RectorConfig;
-use Rector\Core\ValueObject\PhpVersion;
+namespace EliasHaeussler\Typo3CodeceptionHelper\Enums;
 
-return static function (RectorConfig $rectorConfig): void {
-    Config::create($rectorConfig, PhpVersion::PHP_81)
-        ->in(
-            __DIR__.'/src',
-            __DIR__.'/tests',
-        )
-        ->not(
-            __DIR__.'/c3.php',
-            __DIR__.'/tests/src/Fixtures/Codeception/support/*',
-        )
-        ->withPHPUnit()
-        ->apply()
-    ;
-};
+/**
+ * Selectors.
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+enum Selectors: string
+{
+    case BackendContentFrame = '#typo3-contentIframe';
+    case BackendLoginForm = '#typo3-login-form';
+    case BackendLoginPasswordField = '#t3-password';
+    case BackendLoginSubmitButton = '#t3-login-submit';
+    case BackendLoginUsernameField = '#t3-username';
+}

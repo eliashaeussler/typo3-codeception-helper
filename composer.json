@@ -20,6 +20,7 @@
     },
     "require-dev": {
         "armin/editorconfig-cli": "^1.5",
+        "codeception/module-webdriver": "^4.0",
         "eliashaeussler/php-cs-fixer-config": "^1.2",
         "eliashaeussler/phpstan-config": "^2.0",
         "eliashaeussler/rector-config": "^1.1",
@@ -36,7 +37,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "EliasHaeussler\\Typo3CodeceptionHelper\\Tests\\": "tests/"
+            "EliasHaeussler\\Typo3CodeceptionHelper\\Tests\\": "tests/src/"
         }
     },
     "config": {
