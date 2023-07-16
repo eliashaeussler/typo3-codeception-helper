@@ -100,8 +100,15 @@ suites:
         - EliasHaeussler\Typo3CodeceptionHelper\Codeception\Module\Backend
 ```
 
-In order to use the `loginAs()` method, all backend users must be
-configured in the module config section:
+#### Configure backend users
+
+> **Note** Backend users are not automatically created by this
+> module. You need to take care of that by your own, e.g. by
+> [importing static database fixtures](https://codeception.com/docs/modules/Db#SQL-data-dump)
+> before tests are executed.
+
+In order to use the `loginAs()` method, existing backend users
+must be configured in the module config section:
 
 ```diff
  suites:
