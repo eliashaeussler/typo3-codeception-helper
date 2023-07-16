@@ -87,6 +87,10 @@ directory structure exists after the test suite is started:
 A Codeception module that allows to perform actions within TYPO3
 backend. It can for example be used to log into the TYPO3 backend.
 
+> **Note**
+> This module requires the [`WebDriver`](https://codeception.com/docs/modules/WebDriver)
+> module to be installed and enabled.
+
 Enable this module in your `codeception.yml` file:
 
 ```yaml
@@ -102,8 +106,9 @@ suites:
 
 #### Configure backend users
 
-> **Note** Backend users are not automatically created by this
-> module. You need to take care of that by your own, e.g. by
+> **Note**
+> Backend users are not automatically created by this module.
+> You need to take care of that by your own, e.g. by
 > [importing static database fixtures](https://codeception.com/docs/modules/Db#SQL-data-dump)
 > before tests are executed.
 
