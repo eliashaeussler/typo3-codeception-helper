@@ -104,6 +104,47 @@ suites:
         - EliasHaeussler\Typo3CodeceptionHelper\Codeception\Module\Backend
 ```
 
+#### Available methods
+
+**`login($username, $password): void`**
+
+Perform backend login for the given user. The user is identified
+by the given username and is authenticated by the given password.
+
+Example:
+
+```php
+$I->login('admin', 'password');
+```
+
+**`loginAs($username): void`**
+
+Perform backend login for the given user. The user is identified
+by the given username which must be configured in the codeception
+module config (see [Configure backend users](#configure-backend-users)).
+
+Example:
+
+```php
+$I->loginAs('admin');
+```
+
+**`openModule($identifier): void`**
+
+Open a backend module by clicking on the module link. The module
+link is identified by a given node identifier. Note that the
+identifier differs between TYPO3 versions (see example below).
+
+Example:
+
+```php
+// TYPO3 11
+$I->openModule('#web_list');
+
+// TYPO3 12
+$I->openModule('[data-modulemenu-identifier="web_list"]');
+```
+
 #### Configure backend users
 
 > **Note**
