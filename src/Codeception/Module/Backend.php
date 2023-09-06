@@ -45,6 +45,15 @@ final class Backend extends Module
         ],
     ];
 
+    /**
+     * Perform backend login for the given user. The user is identified
+     * by the given username and is authenticated by the given password.
+     *
+     * Example
+     * =======
+     *
+     * $I->login('admin', 'password');
+     */
     public function login(string $username, string $password): void
     {
         /** @var Module\WebDriver $I */
@@ -61,6 +70,15 @@ final class Backend extends Module
     }
 
     /**
+     * Perform backend login for the given user. The user is identified
+     * by the given username which must be configured in the codeception
+     * module config.
+     *
+     * Example
+     * =======
+     *
+     * $I->loginAs('admin');
+     *
      * @param non-empty-string $username
      */
     public function loginAs(string $username): void
@@ -74,6 +92,22 @@ final class Backend extends Module
         $this->login($username, $this->config['userCredentials'][$username]);
     }
 
+    /**
+     * Open a backend module by clicking on the module link. The module
+     * link is identified by a given node identifier. Note that the
+     * identifier differs between TYPO3 versions (see example below).
+     *
+     * Example
+     * =======
+     *
+     * TYPO3 11
+     * --------
+     * $I->openModule('#web_list');
+     *
+     * TYPO3 12
+     * --------
+     * $I->openModule('[data-modulemenu-identifier="web_list"]');
+     */
     public function openModule(string $identifier): void
     {
         /** @var Module\WebDriver $I */
