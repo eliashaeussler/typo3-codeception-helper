@@ -126,8 +126,8 @@ final class EntrypointTest extends Framework\TestCase
     {
         $expected = new Src\ValueObject\Entrypoint(
             __DIR__.'/public',
-            __DIR__.'/public/index.php',
-            __DIR__.'/public/app.php',
+            'index.php',
+            'app.php',
         );
 
         self::assertEquals(
@@ -146,8 +146,8 @@ final class EntrypointTest extends Framework\TestCase
     {
         $expected = new Src\ValueObject\Entrypoint(
             __DIR__.'/public',
-            __DIR__.'/public/index.php',
-            __DIR__.'/public/app.php',
+            'index.php',
+            'app.php',
         );
 
         self::assertEquals(
@@ -172,12 +172,12 @@ final class EntrypointTest extends Framework\TestCase
     #[Framework\Attributes\Test]
     public function getMainEntrypointReturnsMainEntrypoint(): void
     {
-        self::assertSame('index.php', $this->subject->getMainEntrypoint());
+        self::assertSame('public/index.php', $this->subject->getMainEntrypoint());
     }
 
     #[Framework\Attributes\Test]
     public function getAppEntrypointReturnsAppEntrypoint(): void
     {
-        self::assertSame('app.php', $this->subject->getAppEntrypoint());
+        self::assertSame('public/app.php', $this->subject->getAppEntrypoint());
     }
 }

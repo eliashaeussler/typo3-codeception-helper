@@ -79,8 +79,8 @@ final class ApplicationEntrypointModifierTest extends Framework\TestCase
     {
         $expected = new Src\ValueObject\Entrypoint(
             $this->publicDirectory,
-            $this->publicDirectory.'/index.php',
-            $this->publicDirectory.'/app.php',
+            'index.php',
+            'app.php',
         );
 
         self::assertEquals([$expected], $this->subject->getEntrypoints());

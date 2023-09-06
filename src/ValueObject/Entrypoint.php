@@ -58,8 +58,8 @@ final class Entrypoint
     public static function fromConfig(array $config, string $baseDirectory): self
     {
         $webDirectory = Filesystem\Path::join($baseDirectory, self::parseConfig($config, 'web-dir'));
-        $mainEntrypoint = Filesystem\Path::join($webDirectory, self::parseConfig($config, 'main-entrypoint', 'index.php'));
-        $appEntrypoint = Filesystem\Path::join($webDirectory, self::parseConfig($config, 'app-entrypoint', 'app.php'));
+        $mainEntrypoint = self::parseConfig($config, 'main-entrypoint', 'index.php');
+        $appEntrypoint = self::parseConfig($config, 'app-entrypoint', 'app.php');
 
         return new self($webDirectory, $mainEntrypoint, $appEntrypoint);
     }
@@ -105,7 +105,7 @@ final class Entrypoint
      */
     public function getMainEntrypoint(): string
     {
-        return $this->mainEntrypoint;
+        return Filesystem\Path::join($this->webDirectory, $this->mainEntrypoint);
     }
 
     /**
@@ -113,6 +113,6 @@ final class Entrypoint
      */
     public function getAppEntrypoint(): string
     {
-        return $this->appEntrypoint;
+        return Filesystem\Path::join($this->webDirectory, $this->appEntrypoint);
     }
 }
