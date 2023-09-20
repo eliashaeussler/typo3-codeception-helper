@@ -45,8 +45,7 @@ final class Entrypoint
         private readonly string $webDirectory,
         private readonly string $mainEntrypoint = 'index.php',
         private readonly string $appEntrypoint = 'app.php',
-    ) {
-    }
+    ) {}
 
     /**
      * @param array<string, mixed> $config
