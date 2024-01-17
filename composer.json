@@ -16,7 +16,7 @@
 		"composer-runtime-api": "^2.1",
 		"codeception/c3": "^2.8",
 		"codeception/codeception": "^4.1.11 || ^5.0",
-		"symfony/filesystem": "^5.4 || ^6.0"
+		"symfony/filesystem": "^5.4 || ^6.0 || ^7.0"
 	},
 	"require-dev": {
 		"armin/editorconfig-cli": "^1.8 || ^2.0",
@@ -28,7 +28,7 @@
 		"phpstan/extension-installer": "^1.2",
 		"phpstan/phpstan-phpunit": "^1.1",
 		"phpunit/phpunit": "^10.2",
-		"symfony/finder": "^5.4 || ^6.0"
+		"symfony/finder": "^5.4 || ^6.0 || ^7.0"
 	},
 	"autoload": {
 		"psr-4": {
