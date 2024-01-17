@@ -28,6 +28,7 @@ $header = PhpCsFixerConfig\Rules\Header::create(
     'eliashaeussler/typo3-codeception-helper',
     PhpCsFixerConfig\Package\Type::ComposerPackage,
     PhpCsFixerConfig\Package\Author::create('Elias Häußler', 'elias@haeussler.dev'),
+    PhpCsFixerConfig\Package\CopyrightRange::from(2023),
     PhpCsFixerConfig\Package\License::GPL2OrLater,
 );
 
