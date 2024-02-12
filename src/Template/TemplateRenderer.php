@@ -48,7 +48,7 @@ final class TemplateRenderer
      * @param non-empty-string|null $templateDirectory
      */
     public function __construct(
-        string $templateDirectory = null,
+        ?string $templateDirectory = null,
         private readonly Filesystem\Filesystem $filesystem = new Filesystem\Filesystem(),
     ) {
         $this->templateDirectory = $templateDirectory ?? dirname(__DIR__, 2).'/templates';
