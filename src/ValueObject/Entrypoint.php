@@ -73,7 +73,7 @@ final class Entrypoint
      * @throws Exception\ConfigIsEmpty
      * @throws Exception\ConfigIsInvalid
      */
-    private static function parseConfig(array $config, string $name, string $default = null): string
+    private static function parseConfig(array $config, string $name, ?string $default = null): string
     {
         if (!array_key_exists($name, $config) && null !== $default) {
             return $default;
