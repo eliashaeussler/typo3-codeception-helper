@@ -2,7 +2,7 @@
 
 # TYPO3 Codeception Helper
 
-[![Coverage](https://img.shields.io/codecov/c/github/eliashaeussler/typo3-codeception-helper?logo=codecov&token=4BM8pdRAmL)](https://codecov.io/gh/eliashaeussler/typo3-codeception-helper)
+[![Coverage](https://img.shields.io/coverallsCoverage/github/eliashaeussler/typo3-codeception-helper?logo=coveralls)](https://coveralls.io/github/eliashaeussler/typo3-codeception-helper)
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/eliashaeussler/typo3-codeception-helper?logo=codeclimate)](https://codeclimate.com/github/eliashaeussler/typo3-codeception-helper/maintainability)
 [![CGL](https://img.shields.io/github/actions/workflow/status/eliashaeussler/typo3-codeception-helper/cgl.yaml?label=cgl&logo=github)](https://github.com/eliashaeussler/typo3-codeception-helper/actions/workflows/cgl.yaml)
 [![Tests](https://img.shields.io/github/actions/workflow/status/eliashaeussler/typo3-codeception-helper/tests.yaml?label=tests&logo=github)](https://github.com/eliashaeussler/typo3-codeception-helper/actions/workflows/tests.yaml)
