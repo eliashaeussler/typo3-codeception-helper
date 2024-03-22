@@ -27,7 +27,7 @@
 		"ergebnis/composer-normalize": "^2.30",
 		"phpstan/extension-installer": "^1.2",
 		"phpstan/phpstan-phpunit": "^1.1",
-		"phpunit/phpunit": "^11.0",
+		"phpunit/phpunit": "^10.2 || ^11.0",
 		"symfony/finder": "^5.4 || ^6.0 || ^7.0"
 	},
 	"autoload": {
