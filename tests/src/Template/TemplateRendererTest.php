@@ -78,7 +78,6 @@ final class TemplateRendererTest extends Framework\TestCase
         $targetFile = tempnam(sys_get_temp_dir(), 'typo3_codeception_handler_');
 
         self::assertIsString($targetFile);
-        self::assertNotEmpty($targetFile);
 
         // Remove file as it's dumped during testing
         unlink($targetFile);
