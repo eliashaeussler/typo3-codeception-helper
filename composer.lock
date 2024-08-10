@@ -3478,16 +3478,16 @@
         },
         {
             "name": "codeception/module-webdriver",
-            "version": "4.0.1",
+            "version": "4.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/module-webdriver.git",
-                "reference": "68bd12857f2b3321d3114c3c87c9ad9345b3bd5e"
+                "reference": "ef0ea8044eb01dc1e830df27fe431e71440a462f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/module-webdriver/zipball/68bd12857f2b3321d3114c3c87c9ad9345b3bd5e",
-                "reference": "68bd12857f2b3321d3114c3c87c9ad9345b3bd5e",
+                "url": "https://api.github.com/repos/Codeception/module-webdriver/zipball/ef0ea8044eb01dc1e830df27fe431e71440a462f",
+                "reference": "ef0ea8044eb01dc1e830df27fe431e71440a462f",
                 "shasum": ""
             },
             "require": {
@@ -3533,9 +3533,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Codeception/module-webdriver/issues",
-                "source": "https://github.com/Codeception/module-webdriver/tree/4.0.1"
+                "source": "https://github.com/Codeception/module-webdriver/tree/4.0.2"
             },
-            "time": "2024-02-16T12:47:00+00:00"
+            "time": "2024-08-10T00:18:42+00:00"
         },
         {
             "name": "composer/pcre",
