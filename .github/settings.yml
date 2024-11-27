@@ -84,6 +84,12 @@ branches:
           - 'Tests (PHP 8.2 & locked dependencies)'
           - 'Tests (PHP 8.2 & highest dependencies)'
           - 'Tests (PHP 8.2 & lowest dependencies)'
+          - 'Tests (PHP 8.3 & locked dependencies)'
+          - 'Tests (PHP 8.3 & highest dependencies)'
+          - 'Tests (PHP 8.3 & lowest dependencies)'
+          - 'Tests (PHP 8.4 & locked dependencies)'
+          - 'Tests (PHP 8.4 & highest dependencies)'
+          - 'Tests (PHP 8.4 & lowest dependencies)'
           - 'Test coverage'
           - 'coverage/coveralls'
       enforce_admins: false
