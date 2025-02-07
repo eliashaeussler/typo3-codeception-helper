@@ -145,6 +145,20 @@ $I->openModule('#web_list');
 $I->openModule('[data-modulemenu-identifier="web_list"]');
 ```
 
+**`scrollToElementInModule($identifier, $offsetX = 0, $offsetY = 0): void`**
+
+Scroll to a given element, identified by the given node identifier,
+inside the current backend module. This circumvents issues with
+Codeception's native `WebDriver::scrollTo()` method which does not
+support scrolling inside frames.
+
+Example:
+
+```php
+$I->openModule('[data-modulemenu-identifier="web_list"]');
+$I->scrollToElementInModule('tr[data-table="tt_content"]');
+```
+
 #### Configure backend users
 
 > [!NOTE]
