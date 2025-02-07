@@ -25,7 +25,9 @@ namespace EliasHaeussler\Typo3CodeceptionHelper\Codeception\Module;
 
 use Codeception\Module;
 use EliasHaeussler\Typo3CodeceptionHelper\Enums;
+use Facebook\WebDriver;
 
+use function reset;
 use function sprintf;
 
 /**
@@ -33,6 +35,8 @@ use function sprintf;
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
+ *
+ * @method never fail(string $message = '')
  */
 final class Backend extends Module
 {
@@ -56,8 +60,7 @@ final class Backend extends Module
      */
     public function login(string $username, string $password): void
     {
-        /** @var Module\WebDriver $I */
-        $I = $this->getModule('WebDriver');
+        $I = $this->getWebDriver();
 
         $I->amOnPage('/typo3/');
         $I->waitForElementVisible(Enums\Selectors::BackendLoginUsernameField->value);
@@ -110,11 +113,51 @@ final class Backend extends Module
      */
     public function openModule(string $identifier): void
     {
-        /** @var Module\WebDriver $I */
-        $I = $this->getModule('WebDriver');
+        $I = $this->getWebDriver();
 
         $I->waitForElementClickable($identifier, 5);
         $I->click($identifier);
         $I->switchToIFrame(Enums\Selectors::BackendContentFrame->value);
+    }
+
+    public function scrollToElementInModule(string $identifier, int $offsetX = 0, int $offsetY = 0): void
+    {
+        $I = $this->getWebDriver();
+
+        /** @var WebDriver\Remote\RemoteWebElement[] $elements */
+        $elements = $I->_findElements($identifier);
+        $element = reset($elements);
+
+        if (false === $element) {
+            $this->fail(
+                sprintf('Element "%s" not found.', $identifier),
+            );
+        }
+
+        // Make sure we're in content frame
+        $I->switchToFrame();
+        $I->switchToFrame(Enums\Selectors::BackendContentFrame->value);
+
+        $moduleSelector = Enums\Selectors::BackendModuleWrapper->value;
+        $x = $element->getLocation()->getX() + $offsetX;
+        $y = $element->getLocation()->getY() + $offsetY;
+
+        $I->executeJS(<<<JS
+document.querySelector('{$moduleSelector}').scrollLeft = {$x};
+document.querySelector('{$moduleSelector}').scrollTop = {$y};
+JS
+        );
+    }
+
+    private function getWebDriver(): Module\WebDriver
+    {
+        if (!$this->hasModule('WebDriver')) {
+            $this->fail('WebDriver module is not enabled.');
+        }
+
+        /** @var Module\WebDriver $webDriver */
+        $webDriver = $this->getModule('WebDriver');
+
+        return $webDriver;
     }
 }

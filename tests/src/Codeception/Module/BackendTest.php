@@ -24,11 +24,10 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3CodeceptionHelper\Tests\Codeception\Module;
 
 use Codeception\Lib;
+use Codeception\Module;
 use EliasHaeussler\Typo3CodeceptionHelper as Src;
-use EliasHaeussler\Typo3CodeceptionHelper\Tests;
+use Facebook\WebDriver;
 use PHPUnit\Framework;
-
-use function count;
 
 /**
  * BackendTest.
@@ -38,14 +37,14 @@ use function count;
  */
 final class BackendTest extends Framework\TestCase
 {
-    private Tests\Fixtures\Classes\DummyModule $webDriver;
+    private Module\WebDriver&Framework\MockObject\MockObject $webDriver;
     private Src\Codeception\Module\Backend $subject;
 
     protected function setUp(): void
     {
         $moduleContainer = new Lib\ModuleContainer(new Lib\Di(), []);
 
-        $this->webDriver = new Tests\Fixtures\Classes\DummyModule($moduleContainer);
+        $this->webDriver = $this->createMock(Module\WebDriver::class);
         $this->subject = new Src\Codeception\Module\Backend($moduleContainer);
 
         $moduleContainer->mock('WebDriver', $this->webDriver);
@@ -54,24 +53,14 @@ final class BackendTest extends Framework\TestCase
     #[Framework\Attributes\Test]
     public function loginPerformsBackendLogin(): void
     {
-        $expected = [
-            'amOnPage',
-            'waitForElementVisible',
-            'waitForElementVisible',
-            'fillField',
-            'fillField',
-            'click',
-            'waitForElementNotVisible',
-            'seeCookie',
-        ];
+        $this->webDriver->expects(self::once())->method('amOnPage');
+        $this->webDriver->expects(self::exactly(2))->method('waitForElementVisible');
+        $this->webDriver->expects(self::exactly(2))->method('fillField');
+        $this->webDriver->expects(self::once())->method('click');
+        $this->webDriver->expects(self::once())->method('waitForElementNotVisible');
+        $this->webDriver->expects(self::once())->method('seeCookie');
 
         $this->subject->login('admin', 'password');
-
-        self::assertCount(count($expected), $this->webDriver->executedSteps);
-
-        foreach ($expected as $i => $action) {
-            self::assertSame($action, $this->webDriver->executedSteps[$i]['step']);
-        }
     }
 
     #[Framework\Attributes\Test]
@@ -87,34 +76,79 @@ final class BackendTest extends Framework\TestCase
     #[Framework\Attributes\Test]
     public function loginAsPerformsBackendLoginForGivenUser(): void
     {
+        $this->webDriver->expects(self::once())->method('amOnPage');
+        $this->webDriver->expects(self::exactly(2))->method('waitForElementVisible');
+        $this->webDriver->expects(self::exactly(2))->method('fillField');
+        $this->webDriver->expects(self::once())->method('click');
+        $this->webDriver->expects(self::once())->method('waitForElementNotVisible');
+        $this->webDriver->expects(self::once())->method('seeCookie');
+
         $this->subject->loginAs('admin');
-
-        $stepsWithoutPassword = $this->webDriver->executedSteps;
-
-        $this->webDriver->executedSteps = [];
-
-        $this->subject->login('admin', 'password');
-
-        $stepsWithPassword = $this->webDriver->executedSteps;
-
-        self::assertEquals($stepsWithoutPassword, $stepsWithPassword);
     }
 
     #[Framework\Attributes\Test]
     public function openModuleOpensBackendModule(): void
     {
-        $expected = [
-            'waitForElementClickable',
-            'click',
-            'switchToIFrame',
-        ];
+        $this->webDriver->expects(self::once())->method('waitForElementClickable');
+        $this->webDriver->expects(self::once())->method('click');
+        $this->webDriver->expects(self::once())->method('switchToIFrame');
 
         $this->subject->openModule('foo');
+    }
 
-        self::assertCount(count($expected), $this->webDriver->executedSteps);
+    #[Framework\Attributes\Test]
+    public function scrollToElementInModuleThrowsExceptionIfElementDoesNotExist(): void
+    {
+        $this->expectExceptionObject(
+            new Framework\AssertionFailedError('Element "foo" not found.'),
+        );
 
-        foreach ($expected as $i => $action) {
-            self::assertSame($action, $this->webDriver->executedSteps[$i]['step']);
-        }
+        $this->subject->scrollToElementInModule('foo');
+    }
+
+    #[Framework\Attributes\Test]
+    public function scrollToElementInModuleExecutesJavaScriptToScrollModuleToElementPosition(): void
+    {
+        $remoteExecuteMethod = $this->createMock(WebDriver\Remote\RemoteExecuteMethod::class);
+        $remoteExecuteMethod->method('execute')->willReturn([
+            'x' => 10,
+            'y' => 20,
+        ]);
+
+        $this->webDriver->method('_findElements')->willReturn([
+            new WebDriver\Remote\RemoteWebElement($remoteExecuteMethod, 'foo'),
+        ]);
+
+        $this->webDriver->expects(self::once())->method('_findElements');
+        $this->webDriver->expects(self::exactly(2))->method('switchToFrame');
+        $this->webDriver->expects(self::once())->method('executeJS')->with(<<<JS
+document.querySelector('.module').scrollLeft = 10;
+document.querySelector('.module').scrollTop = 20;
+JS
+        );
+
+        $this->subject->scrollToElementInModule('foo');
+    }
+
+    #[Framework\Attributes\Test]
+    public function scrollToElementInModuleExecutesJavaScriptToScrollModuleToElementPositionAndRespectsOffsets(): void
+    {
+        $remoteExecuteMethod = $this->createMock(WebDriver\Remote\RemoteExecuteMethod::class);
+        $remoteExecuteMethod->method('execute')->willReturn([
+            'x' => 10,
+            'y' => 20,
+        ]);
+
+        $this->webDriver->method('_findElements')->willReturn([
+            new WebDriver\Remote\RemoteWebElement($remoteExecuteMethod, 'foo'),
+        ]);
+
+        $this->webDriver->expects(self::once())->method('executeJS')->with(<<<JS
+document.querySelector('.module').scrollLeft = 15;
+document.querySelector('.module').scrollTop = 28;
+JS
+        );
+
+        $this->subject->scrollToElementInModule('foo', 5, 8);
     }
 }
