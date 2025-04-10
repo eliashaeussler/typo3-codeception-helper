@@ -32,9 +32,10 @@ namespace EliasHaeussler\Typo3CodeceptionHelper\Enums;
 enum Selectors: string
 {
     case BackendContentFrame = '#typo3-contentIframe';
-    case BackendModuleWrapper = '.module';
     case BackendLoginForm = '#typo3-login-form';
     case BackendLoginPasswordField = '#t3-password';
     case BackendLoginSubmitButton = '#t3-login-submit';
     case BackendLoginUsernameField = '#t3-username';
+    case BackendModuleWrapper = '.module';
+    case BackendProgressBar = '#nprogress';
 }

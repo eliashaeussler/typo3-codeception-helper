@@ -57,7 +57,7 @@ final class BackendTest extends Framework\TestCase
         $this->webDriver->expects(self::exactly(2))->method('waitForElementVisible');
         $this->webDriver->expects(self::exactly(2))->method('fillField');
         $this->webDriver->expects(self::once())->method('click');
-        $this->webDriver->expects(self::once())->method('waitForElementNotVisible');
+        $this->webDriver->expects(self::exactly(2))->method('waitForElementNotVisible');
         $this->webDriver->expects(self::once())->method('seeCookie');
 
         $this->subject->login('admin', 'password');
@@ -80,7 +80,7 @@ final class BackendTest extends Framework\TestCase
         $this->webDriver->expects(self::exactly(2))->method('waitForElementVisible');
         $this->webDriver->expects(self::exactly(2))->method('fillField');
         $this->webDriver->expects(self::once())->method('click');
-        $this->webDriver->expects(self::once())->method('waitForElementNotVisible');
+        $this->webDriver->expects(self::exactly(2))->method('waitForElementNotVisible');
         $this->webDriver->expects(self::once())->method('seeCookie');
 
         $this->subject->loginAs('admin');
