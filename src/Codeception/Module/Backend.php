@@ -69,6 +69,7 @@ final class Backend extends Module
         $I->fillField(Enums\Selectors::BackendLoginPasswordField->value, $password);
         $I->click(Enums\Selectors::BackendLoginSubmitButton->value);
         $I->waitForElementNotVisible(Enums\Selectors::BackendLoginForm->value);
+        $I->waitForElementNotVisible(Enums\Selectors::BackendProgressBar->value);
         $I->seeCookie('be_typo_user');
     }
 
