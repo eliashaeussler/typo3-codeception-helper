@@ -11,3 +11,9 @@ parameters:
 			identifier: property.phpDocType
 			count: 1
 			path: src/Codeception/Module/Backend.php
+
+		-
+			message: '#^Instantiation of internal class PHPUnit\\Framework\\AssertionFailedError\.$#'
+			identifier: new.internalClass
+			count: 2
+			path: tests/src/Codeception/Module/BackendTest.php
