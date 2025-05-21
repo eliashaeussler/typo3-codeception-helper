@@ -67,6 +67,7 @@ final class BackendTest extends Framework\TestCase
     public function loginAsThrowsExceptionIfGivenUserIsNotConfigured(): void
     {
         $this->expectExceptionObject(
+            /* @phpstan-ignore method.internalClass */
             new Framework\AssertionFailedError('A user with username "foo" is not configured.'),
         );
 
@@ -100,6 +101,7 @@ final class BackendTest extends Framework\TestCase
     public function scrollToElementInModuleThrowsExceptionIfElementDoesNotExist(): void
     {
         $this->expectExceptionObject(
+            /* @phpstan-ignore method.internalClass */
             new Framework\AssertionFailedError('Element "foo" not found.'),
         );
 
