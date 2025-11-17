@@ -85,6 +85,9 @@ final class ApplicationEntrypointModifier extends Extension
         }
     }
 
+    /**
+     * @throws Exception\FileDoesNotExist
+     */
     public function beforeSuite(): void
     {
         foreach ($this->entrypoints as $entrypoint) {
@@ -102,8 +105,19 @@ final class ApplicationEntrypointModifier extends Extension
         return $this->entrypoints;
     }
 
+    /**
+     * @throws Exception\FileDoesNotExist
+     */
     private function entrypointNeedsUpdate(ValueObject\Entrypoint $entrypoint): bool
     {
+        if (!$this->filesystem->exists($entrypoint->getMainEntrypoint())) {
+            if ($entrypoint->isOptional()) {
+                return false;
+            }
+
+            throw new Exception\FileDoesNotExist($entrypoint->getMainEntrypoint());
+        }
+
         if (!$this->filesystem->exists($entrypoint->getAppEntrypoint())) {
             return true;
         }

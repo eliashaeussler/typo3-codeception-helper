@@ -148,6 +148,7 @@ final class EntrypointTest extends Framework\TestCase
             __DIR__.'/public',
             'index.php',
             'app.php',
+            true,
         );
 
         self::assertEquals(
@@ -157,6 +158,7 @@ final class EntrypointTest extends Framework\TestCase
                     'web-dir' => 'public',
                     'main-entrypoint' => 'index.php',
                     'app-entrypoint' => 'app.php',
+                    'optional' => true,
                 ],
                 __DIR__,
             ),
