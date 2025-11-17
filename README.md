@@ -50,6 +50,7 @@ extensions:
           - web-dir: .Build/web/typo3
             main-entrypoint: index.php
             app-entrypoint: app.php
+            optional: true
 ```
 
 For each entrypoint, the following config must be provided:
@@ -59,6 +60,7 @@ For each entrypoint, the following config must be provided:
 | `web-dir`         | Relative path from project root to directory that contains the main entrypoint | –             |
 | `main-entrypoint` | Name of the entrypoint to replace (the file being accessed by the web server)  | `index.php`   |
 | `app-entrypoint`  | Name of the original relocated entrypoint (the renamed main entrypoint)        | `app.php`     |
+| `optional`        | Set to `true` if a non-existent main entrypoint can be ignored                 | `false`       |
 
 #### Example
 

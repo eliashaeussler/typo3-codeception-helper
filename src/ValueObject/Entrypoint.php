@@ -45,6 +45,7 @@ final class Entrypoint
         private readonly string $webDirectory,
         private readonly string $mainEntrypoint = 'index.php',
         private readonly string $appEntrypoint = 'app.php',
+        private readonly bool $optional = false,
     ) {}
 
     /**
@@ -59,8 +60,9 @@ final class Entrypoint
         $webDirectory = Filesystem\Path::join($baseDirectory, self::parseConfig($config, 'web-dir'));
         $mainEntrypoint = self::parseConfig($config, 'main-entrypoint', 'index.php');
         $appEntrypoint = self::parseConfig($config, 'app-entrypoint', 'app.php');
+        $optional = (bool) ($config['optional'] ?? false);
 
-        return new self($webDirectory, $mainEntrypoint, $appEntrypoint);
+        return new self($webDirectory, $mainEntrypoint, $appEntrypoint, $optional);
     }
 
     /**
@@ -113,5 +115,10 @@ final class Entrypoint
     public function getAppEntrypoint(): string
     {
         return Filesystem\Path::join($this->webDirectory, $this->appEntrypoint);
+    }
+
+    public function isOptional(): bool
+    {
+        return $this->optional;
     }
 }

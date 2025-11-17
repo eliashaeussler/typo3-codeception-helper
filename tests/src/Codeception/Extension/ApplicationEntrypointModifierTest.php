@@ -87,6 +87,49 @@ final class ApplicationEntrypointModifierTest extends Framework\TestCase
     }
 
     #[Framework\Attributes\Test]
+    public function beforeSuiteThrowsExceptionIfNonOptionalEntrypointDoesNotExist(): void
+    {
+        $subject = new Src\Codeception\Extension\ApplicationEntrypointModifier(
+            [
+                'entrypoints' => [
+                    [
+                        'web-dir' => 'public',
+                        'main-entrypoint' => 'index-missing.php',
+                    ],
+                ],
+            ],
+            [],
+        );
+
+        $this->expectExceptionObject(
+            new Src\Exception\FileDoesNotExist($this->publicDirectory.'/index-missing.php'),
+        );
+
+        $subject->beforeSuite();
+    }
+
+    #[Framework\Attributes\Test]
+    public function beforeSuiteDoesNothingIfOptionEntrypointDoesNotExist(): void
+    {
+        $subject = new Src\Codeception\Extension\ApplicationEntrypointModifier(
+            [
+                'entrypoints' => [
+                    [
+                        'web-dir' => 'public',
+                        'main-entrypoint' => 'index-missing.php',
+                        'optional' => true,
+                    ],
+                ],
+            ],
+            [],
+        );
+
+        $subject->beforeSuite();
+
+        self::assertCount(1, $this->createFinder());
+    }
+
+    #[Framework\Attributes\Test]
     public function beforeSuiteCreatesEntrypointIfItDoesNotExist(): void
     {
         $this->subject->beforeSuite();
