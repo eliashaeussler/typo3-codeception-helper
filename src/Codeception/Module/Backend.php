@@ -139,15 +139,17 @@ final class Backend extends Module
         $I->switchToFrame();
         $I->switchToFrame(Enums\Selectors::BackendContentFrame->value);
 
-        $moduleSelector = Enums\Selectors::BackendModuleWrapper->value;
         $x = $element->getLocation()->getX() + $offsetX;
         $y = $element->getLocation()->getY() + $offsetY;
 
         $I->executeJS(<<<JS
-document.querySelector('{$moduleSelector}').scrollLeft = {$x};
-document.querySelector('{$moduleSelector}').scrollTop = {$y};
+document.scrollingElement.scrollLeft = {$x};
+document.scrollingElement.scrollTop = {$y};
 JS
         );
+
+        // Wait for scrolling to finish
+        $I->wait(1);
     }
 
     private function getWebDriver(): Module\WebDriver

@@ -124,10 +124,11 @@ final class BackendTest extends Framework\TestCase
         $this->webDriver->expects(self::once())->method('_findElements');
         $this->webDriver->expects(self::exactly(2))->method('switchToFrame');
         $this->webDriver->expects(self::once())->method('executeJS')->with(<<<JS
-document.querySelector('.module').scrollLeft = 10;
-document.querySelector('.module').scrollTop = 20;
+document.scrollingElement.scrollLeft = 10;
+document.scrollingElement.scrollTop = 20;
 JS
         );
+        $this->webDriver->expects(self::once())->method('wait');
 
         $this->subject->scrollToElementInModule('foo');
     }
@@ -146,10 +147,11 @@ JS
         ]);
 
         $this->webDriver->expects(self::once())->method('executeJS')->with(<<<JS
-document.querySelector('.module').scrollLeft = 15;
-document.querySelector('.module').scrollTop = 28;
+document.scrollingElement.scrollLeft = 15;
+document.scrollingElement.scrollTop = 28;
 JS
         );
+        $this->webDriver->expects(self::once())->method('wait');
 
         $this->subject->scrollToElementInModule('foo', 5, 8);
     }
