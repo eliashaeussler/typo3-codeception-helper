@@ -36,6 +36,5 @@ enum Selectors: string
     public const BackendLoginPasswordField = '#t3-password';
     public const BackendLoginSubmitButton = '#t3-login-submit';
     public const BackendLoginUsernameField = '#t3-username';
-    public const BackendModuleWrapper = '.module';
     public const BackendProgressBar = '#nprogress';
 }
