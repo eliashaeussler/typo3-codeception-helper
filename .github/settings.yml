@@ -90,12 +90,6 @@ rulesets:
           required_status_checks:
             - context: 'cgl'
               integration_id: 15368
-            - context: 'Tests (PHP 8.1 & locked dependencies)'
-              integration_id: 15368
-            - context: 'Tests (PHP 8.1 & highest dependencies)'
-              integration_id: 15368
-            - context: 'Tests (PHP 8.1 & lowest dependencies)'
-              integration_id: 15368
             - context: 'Tests (PHP 8.2 & locked dependencies)'
               integration_id: 15368
             - context: 'Tests (PHP 8.2 & highest dependencies)'
