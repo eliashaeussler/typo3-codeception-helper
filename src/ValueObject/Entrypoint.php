@@ -34,7 +34,7 @@ use function array_key_exists;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class Entrypoint
+final readonly class Entrypoint
 {
     /**
      * @param non-empty-string $webDirectory
@@ -42,10 +42,10 @@ final class Entrypoint
      * @param non-empty-string $appEntrypoint
      */
     public function __construct(
-        private readonly string $webDirectory,
-        private readonly string $mainEntrypoint = 'index.php',
-        private readonly string $appEntrypoint = 'app.php',
-        private readonly bool $optional = false,
+        private string $webDirectory,
+        private string $mainEntrypoint = 'index.php',
+        private string $appEntrypoint = 'app.php',
+        private bool $optional = false,
     ) {}
 
     /**

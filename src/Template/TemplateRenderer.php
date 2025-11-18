@@ -37,19 +37,19 @@ use function strtr;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class TemplateRenderer
+final readonly class TemplateRenderer
 {
     /**
      * @var non-empty-string
      */
-    private readonly string $templateDirectory;
+    private string $templateDirectory;
 
     /**
      * @param non-empty-string|null $templateDirectory
      */
     public function __construct(
         ?string $templateDirectory = null,
-        private readonly Filesystem\Filesystem $filesystem = new Filesystem\Filesystem(),
+        private Filesystem\Filesystem $filesystem = new Filesystem\Filesystem(),
     ) {
         $this->templateDirectory = $templateDirectory ?? dirname(__DIR__, 2).'/templates';
     }
