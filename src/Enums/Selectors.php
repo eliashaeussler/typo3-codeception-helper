@@ -31,11 +31,11 @@ namespace EliasHaeussler\Typo3CodeceptionHelper\Enums;
  */
 enum Selectors: string
 {
-    case BackendContentFrame = '#typo3-contentIframe';
-    case BackendLoginForm = '#typo3-login-form';
-    case BackendLoginPasswordField = '#t3-password';
-    case BackendLoginSubmitButton = '#t3-login-submit';
-    case BackendLoginUsernameField = '#t3-username';
-    case BackendModuleWrapper = '.module';
-    case BackendProgressBar = '#nprogress';
+    public const BackendContentFrame = '#typo3-contentIframe';
+    public const BackendLoginForm = '#typo3-login-form';
+    public const BackendLoginPasswordField = '#t3-password';
+    public const BackendLoginSubmitButton = '#t3-login-submit';
+    public const BackendLoginUsernameField = '#t3-username';
+    public const BackendModuleWrapper = '.module';
+    public const BackendProgressBar = '#nprogress';
 }
