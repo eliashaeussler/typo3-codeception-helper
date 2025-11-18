@@ -63,13 +63,13 @@ final class Backend extends Module
         $I = $this->getWebDriver();
 
         $I->amOnPage('/typo3/');
-        $I->waitForElementVisible(Enums\Selectors::BackendLoginUsernameField->value);
-        $I->waitForElementVisible(Enums\Selectors::BackendLoginPasswordField->value);
-        $I->fillField(Enums\Selectors::BackendLoginUsernameField->value, $username);
-        $I->fillField(Enums\Selectors::BackendLoginPasswordField->value, $password);
-        $I->click(Enums\Selectors::BackendLoginSubmitButton->value);
-        $I->waitForElementNotVisible(Enums\Selectors::BackendLoginForm->value);
-        $I->waitForElementNotVisible(Enums\Selectors::BackendProgressBar->value);
+        $I->waitForElementVisible(Enums\Selectors::BackendLoginUsernameField);
+        $I->waitForElementVisible(Enums\Selectors::BackendLoginPasswordField);
+        $I->fillField(Enums\Selectors::BackendLoginUsernameField, $username);
+        $I->fillField(Enums\Selectors::BackendLoginPasswordField, $password);
+        $I->click(Enums\Selectors::BackendLoginSubmitButton);
+        $I->waitForElementNotVisible(Enums\Selectors::BackendLoginForm);
+        $I->waitForElementNotVisible(Enums\Selectors::BackendProgressBar);
         $I->seeCookie('be_typo_user');
     }
 
@@ -118,7 +118,7 @@ final class Backend extends Module
 
         $I->waitForElementClickable($identifier, 5);
         $I->click($identifier);
-        $I->switchToIFrame(Enums\Selectors::BackendContentFrame->value);
+        $I->switchToIFrame(Enums\Selectors::BackendContentFrame);
     }
 
     public function scrollToElementInModule(string $identifier, int $offsetX = 0, int $offsetY = 0): void
@@ -137,7 +137,7 @@ final class Backend extends Module
 
         // Make sure we're in content frame
         $I->switchToFrame();
-        $I->switchToFrame(Enums\Selectors::BackendContentFrame->value);
+        $I->switchToFrame(Enums\Selectors::BackendContentFrame);
 
         $x = $element->getLocation()->getX() + $offsetX;
         $y = $element->getLocation()->getY() + $offsetY;
