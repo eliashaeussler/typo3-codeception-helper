@@ -21,7 +21,7 @@
 	"require-dev": {
 		"armin/editorconfig-cli": "^2.0",
 		"codeception/module-webdriver": "^4.0",
-		"eliashaeussler/php-cs-fixer-config": "^2.0",
+		"eliashaeussler/php-cs-fixer-config": "^3.0",
 		"eliashaeussler/phpstan-config": "^3.0",
 		"eliashaeussler/rector-config": "^3.0",
 		"ergebnis/composer-normalize": "^2.30",
