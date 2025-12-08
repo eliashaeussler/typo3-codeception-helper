@@ -3684,21 +3684,21 @@
         },
         {
             "name": "codeception/module-webdriver",
-            "version": "4.0.3",
+            "version": "4.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/module-webdriver.git",
-                "reference": "551d214ddd57a9539acf1123d7c56ec82b1004df"
+                "reference": "4a87a8a5eb0f07d421fc8b6bb0decd7b20948c04"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/module-webdriver/zipball/551d214ddd57a9539acf1123d7c56ec82b1004df",
-                "reference": "551d214ddd57a9539acf1123d7c56ec82b1004df",
+                "url": "https://api.github.com/repos/Codeception/module-webdriver/zipball/4a87a8a5eb0f07d421fc8b6bb0decd7b20948c04",
+                "reference": "4a87a8a5eb0f07d421fc8b6bb0decd7b20948c04",
                 "shasum": ""
             },
             "require": {
                 "codeception/codeception": "^5.0.8",
-                "codeception/lib-web": "^1.0.1",
+                "codeception/lib-web": "^1.0.1 || ^2",
                 "codeception/stub": "^4.0",
                 "ext-json": "*",
                 "ext-mbstring": "*",
@@ -3739,9 +3739,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Codeception/module-webdriver/issues",
-                "source": "https://github.com/Codeception/module-webdriver/tree/4.0.3"
+                "source": "https://github.com/Codeception/module-webdriver/tree/4.0.4"
             },
-            "time": "2025-02-14T07:10:05+00:00"
+            "time": "2025-11-28T06:40:36+00:00"
         },
         {
             "name": "composer/pcre",
