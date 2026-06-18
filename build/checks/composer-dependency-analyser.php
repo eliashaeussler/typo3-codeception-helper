@@ -21,22 +21,11 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use EliasHaeussler\PhpCsFixerConfig;
-use Symfony\Component\Finder;
+use ShipMonk\ComposerDependencyAnalyser;
 
-$header = PhpCsFixerConfig\Rules\Header::create(
-    'eliashaeussler/typo3-codeception-helper',
-    PhpCsFixerConfig\Package\Type::ComposerPackage,
-    PhpCsFixerConfig\Package\Author::create('Elias Häußler', 'elias@haeussler.dev'),
-    PhpCsFixerConfig\Package\CopyrightRange::from(2023),
-    PhpCsFixerConfig\Package\License::GPL2OrLater,
-);
+$config = new ComposerDependencyAnalyser\Config\Configuration();
+$config->ignoreErrorsOnPackage('codeception/c3', [
+    ComposerDependencyAnalyser\Config\ErrorType::UNUSED_DEPENDENCY,
+]);
 
-return PhpCsFixerConfig\Config::create()
-    ->withRule($header)
-    ->withFinder(
-        static fn (Finder\Finder $finder) => $finder
-            ->in(__DIR__)
-            ->notName('c3.php'),
-    )
-;
+return $config;

@@ -24,9 +24,8 @@ declare(strict_types=1);
 use Symfony\Component\Finder;
 
 return Finder\Finder::create()
-    ->in(__DIR__)
+    ->in(dirname(__DIR__, 2))
     ->notPath([
-        '.build',
         'public',
         'tests/src/Fixtures/Codeception/support',
         'vendor',

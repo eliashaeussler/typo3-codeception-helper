@@ -21,25 +21,22 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use EliasHaeussler\RectorConfig\Config\Config;
-use Rector\Config\RectorConfig;
-use Rector\Privatization\Rector\Property\PrivatizeFinalClassPropertyRector;
-use Rector\ValueObject\PhpVersion;
+use EliasHaeussler\PhpCsFixerConfig;
+use Symfony\Component\Finder;
 
-return static function (RectorConfig $rectorConfig): void {
-    Config::create($rectorConfig, PhpVersion::PHP_82)
-        ->in(
-            __DIR__.'/src',
-            __DIR__.'/tests',
-        )
-        ->not(
-            __DIR__.'/c3.php',
-            __DIR__.'/tests/src/Fixtures/Codeception/support/*',
-        )
-        ->withPHPUnit()
-        ->skip(PrivatizeFinalClassPropertyRector::class, [
-            __DIR__.'/src/Codeception/Extension/ApplicationEntrypointModifier.php',
-        ])
-        ->apply()
-    ;
-};
+$header = PhpCsFixerConfig\Rules\Header::create(
+    'eliashaeussler/typo3-codeception-helper',
+    PhpCsFixerConfig\Package\Type::ComposerPackage,
+    PhpCsFixerConfig\Package\Author::create('Elias Häußler', 'elias@haeussler.dev'),
+    PhpCsFixerConfig\Package\CopyrightRange::from(2023),
+    PhpCsFixerConfig\Package\License::GPL2OrLater,
+);
+
+return PhpCsFixerConfig\Config::create()
+    ->withRule($header)
+    ->withFinder(
+        static fn (Finder\Finder $finder) => $finder
+            ->in(dirname(__DIR__, 2))
+            ->notName('c3.php'),
+    )
+;
