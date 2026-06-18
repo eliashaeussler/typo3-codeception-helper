@@ -4,16 +4,16 @@ parameters:
 			message: '#^PHPDoc type array\<string, list\<array\<string, mixed\>\>\> of property EliasHaeussler\\Typo3CodeceptionHelper\\Codeception\\Extension\\ApplicationEntrypointModifier\:\:\$config is not the same as PHPDoc type array\<int\|string, mixed\> of overridden property Codeception\\Extension\:\:\$config\.$#'
 			identifier: property.phpDocType
 			count: 1
-			path: src/Codeception/Extension/ApplicationEntrypointModifier.php
+			path: ../../src/Codeception/Extension/ApplicationEntrypointModifier.php
 
 		-
 			message: '#^PHPDoc type array\<string, array\<string, string\>\> of property EliasHaeussler\\Typo3CodeceptionHelper\\Codeception\\Module\\Backend\:\:\$config is not the same as PHPDoc type array of overridden property Codeception\\Module\:\:\$config\.$#'
 			identifier: property.phpDocType
 			count: 1
-			path: src/Codeception/Module/Backend.php
+			path: ../../src/Codeception/Module/Backend.php
 
 		-
 			message: '#^Instantiation of internal class PHPUnit\\Framework\\AssertionFailedError\.$#'
 			identifier: new.internalClass
 			count: 2
-			path: tests/src/Codeception/Module/BackendTest.php
+			path: ../../tests/src/Codeception/Module/BackendTest.php

@@ -21,22 +21,27 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use EliasHaeussler\PHPStanConfig;
+use EliasHaeussler\RectorConfig\Config\Config;
+use Rector\Config\RectorConfig;
+use Rector\Privatization\Rector\Property\PrivatizeFinalClassPropertyRector;
+use Rector\ValueObject\PhpVersion;
 
-return PHPStanConfig\Config\Config::create(__DIR__)
-    ->in(
-        'src',
-        'tests',
-    )
-    ->not(
-        'tests/src/Fixtures/Codeception/support',
-    )
-    ->withBaseline()
-    ->withBleedingEdge()
-    ->stubFiles(
-        'tests/stubs/Configuration.stub',
-        'tests/stubs/Path.stub',
-    )
-    ->maxLevel()
-    ->toArray()
-;
+return static function (RectorConfig $rectorConfig): void {
+    $rootPath = dirname(__DIR__, 2);
+
+    Config::create($rectorConfig, PhpVersion::PHP_82)
+        ->in(
+            $rootPath.'/src',
+            $rootPath.'/tests',
+        )
+        ->not(
+            $rootPath.'/c3.php',
+            $rootPath.'/tests/src/Fixtures/Codeception/support/*',
+        )
+        ->withPHPUnit()
+        ->skip(PrivatizeFinalClassPropertyRector::class, [
+            $rootPath.'/src/Codeception/Extension/ApplicationEntrypointModifier.php',
+        ])
+        ->apply()
+    ;
+};
