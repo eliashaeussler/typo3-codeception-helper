@@ -92,7 +92,7 @@ final class TemplateRendererTest extends Framework\TestCase
 
         require $targetFile;
 
-        self::assertSame('Hello World!', trim((string) ob_get_clean()));
+        self::assertSame('Hello World!', trim(ob_get_clean()));
 
         unlink($targetFile);
     }
