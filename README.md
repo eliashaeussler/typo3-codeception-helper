@@ -11,7 +11,7 @@
 > [!IMPORTANT]
 > Codeception support within TYPO3 is considered
 > [deprecated](https://github.com/TYPO3/testing-framework/pull/722)
-> and this helper library will be abandoned sooner of later. If
+> and this helper library will be abandoned sooner or later. If
 > possible, switch to Playwright instead.
 
 This library provides some helper functions for [Codeception](https://codeception.com/)
