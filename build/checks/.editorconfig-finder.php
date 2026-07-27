@@ -33,4 +33,5 @@ return Finder\Finder::create()
     ->notName([
         'c3.php',
     ])
+    ->ignoreVCSIgnored(true)
 ;
